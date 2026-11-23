@@ -1047,42 +1047,6 @@
             cursor: pointer;
         }
 
-        /* Lista de canciones dentro del reproductor Glass */
-        .playlist-mini-list {
-            max-height: 112px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255, 255, 255, 0.45) rgba(255, 255, 255, 0.08);
-        }
-
-        .playlist-mini-list::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .playlist-mini-list::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 9999px;
-        }
-
-        .playlist-mini-list::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.45);
-            border-radius: 9999px;
-        }
-
-        .playlist-track-row {
-            transition: background 0.22s ease, border-color 0.22s ease;
-        }
-
-        .playlist-track-row:hover {
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .playlist-track-row.active-track {
-            background: rgba(255, 255, 255, 0.20);
-            border-color: rgba(255, 255, 255, 0.45);
-        }
-
         /* Avatares e indicadores de estado API */
         .avatar-circle-inner {
             position: relative;
@@ -1639,16 +1603,6 @@
 
                 <!-- Fila Secundaria: Lista de pistas, Control de Volumen y Favorito -->
                 <div class="flex items-center justify-between gap-2 mt-2 pt-1.5 border-t border-white/15">
-                    <button 
-                        type="button" 
-                        onclick="togglePlaylistDrawer()" 
-                        class="glass-control-btn px-2 py-1 gap-1.5 text-[10px] font-semibold tracking-wide"
-                        aria-label="Mostrar lista de canciones"
-                    >
-                        <i class="ph-bold ph-queue text-sm"></i>
-                        <span class="rm-silver-white-text hidden sm:inline">Playlist</span>
-                    </button>
-
                     <div class="flex items-center gap-2 flex-1 max-w-[180px]">
                         <i class="ph-fill ph-speaker-low text-xs text-white/80"></i>
                         <input 
@@ -1675,10 +1629,6 @@
                     </button>
                 </div>
 
-                <!-- Lista desplegable de pistas de JHON -->
-                <div id="playlist-tracks-container" class="playlist-mini-list hidden flex-col gap-1 mt-3 pt-2 border-t border-white/15">
-                </div>
-            
             </div>
         </div>
 
@@ -2287,37 +2237,13 @@
             }
         });
 
-        // 3. Reproductor Glass con Canción Principal (track1.mp3) y Pistas de JHON
+        // 3. Reproductor Glass con una única canción (track1.mp3)
         const PLAYLIST_JHON = [
             {
                 title: 'Written In The Stars',
                 artist: 'Tinie Tempah ft. Eric Turner',
                 durationLabel: '3:39',
                 src: 'track1.mp3'
-            },
-            {
-                title: 'JHON — Midnight Legend',
-                artist: 'Real Madrid Edition',
-                durationLabel: '3:42',
-                src: null
-            },
-            {
-                title: 'JHON — The Champion',
-                artist: 'Real Madrid Edition',
-                durationLabel: '4:05',
-                src: null
-            },
-            {
-                title: 'JHON — Golden Memories',
-                artist: 'Real Madrid Edition',
-                durationLabel: '3:28',
-                src: null
-            },
-            {
-                title: 'JHON — Eternal Glory',
-                artist: 'Real Madrid Edition',
-                durationLabel: '3:54',
-                src: null
             }
         ];
 
@@ -2328,27 +2254,6 @@
         const audioPlayer = new Audio();
         audioPlayer.preload = 'none';
         audioPlayer.volume = 0.75;
-
-        function renderPlaylistUI() {
-            const listContainer = document.getElementById('playlist-tracks-container');
-            if (listContainer) {
-                listContainer.innerHTML = PLAYLIST_JHON.map((track, idx) => `
-                    <button 
-                        type="button"
-                        id="playlist-row-${idx}"
-                        onclick="selectTrackByIndex(${idx})"
-                        class="playlist-track-row w-full flex items-center justify-between gap-3 px-3 py-1.5 rounded-xl border border-transparent text-left"
-                    >
-                        <div class="min-w-0 flex-1 leading-tight">
-                            <div class="rm-silver-white-text font-bold text-xs truncate">${track.title}</div>
-                            <div class="rm-silver-white-text text-[10px] font-medium opacity-75 truncate mt-0.5">${track.artist}</div>
-                        </div>
-                        <span class="rm-silver-white-text text-[10px] font-semibold opacity-80 flex-shrink-0">${track.durationLabel}</span>
-                    </button>
-                `).join('');
-            }
-            updateTrackDisplayUI();
-        }
 
         function formatSeconds(sec) {
             if (!isFinite(sec) || sec < 0) return '0:00';
@@ -2370,16 +2275,9 @@
             if (statusNoteEl) {
                 statusNoteEl.textContent = track.src ? 'Listo' : 'Audio pendiente';
             }
-
-            PLAYLIST_JHON.forEach((_, idx) => {
-                const row = document.getElementById(`playlist-row-${idx}`);
-                if (row) {
-                    row.classList.toggle('active-track', idx === currentTrackIndex);
-                }
-            });
         }
 
-        renderPlaylistUI();
+        updateTrackDisplayUI();
 
         function enterMainSite() {
             const introScreen = document.getElementById('intro-screen');
@@ -2520,12 +2418,6 @@
             loadCurrentTrack(isPlayingMusic);
         }
 
-        function selectTrackByIndex(index) {
-            if (index < 0 || index >= PLAYLIST_JHON.length) return;
-            currentTrackIndex = index;
-            loadCurrentTrack(true);
-        }
-
         function toggleShuffleMusic() {
             isShuffleEnabled = !isShuffleEnabled;
             const btn = document.getElementById('player-shuffle-btn');
@@ -2537,18 +2429,6 @@
             audioPlayer.loop = isRepeatEnabled;
             const btn = document.getElementById('player-repeat-btn');
             if (btn) btn.classList.toggle('is-active-mode', isRepeatEnabled);
-        }
-
-        function togglePlaylistDrawer() {
-            const drawer = document.getElementById('playlist-tracks-container');
-            if (!drawer) return;
-            if (drawer.classList.contains('hidden')) {
-                drawer.classList.remove('hidden');
-                drawer.classList.add('flex');
-            } else {
-                drawer.classList.add('hidden');
-                drawer.classList.remove('flex');
-            }
         }
 
         let isPlayerLiked = false;
