@@ -1,0 +1,3359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JHON — (121997)</title>
+
+    <!-- Favicon visible en todas las pestañas / navegadores -->
+    <link rel="icon" type="image/png" sizes="any" href="https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/favicon.png">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/favicon.png">
+    <meta name="msapplication-TileImage" content="https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/favicon.png">
+
+    <!-- Fuente moderna y limpia: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        editorial: {
+                            50: '#f8f9fa',
+                            100: '#f1f3f5',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#141619',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f4f5f7;
+            color: #141619;
+            overflow-x: hidden;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Fondo Principal Monocromático (conserva exactamente la opacidad e intensidad aprobadas por defecto) */
+        .site-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-color: #f4f5f7;
+            background-image:
+                linear-gradient(
+                    180deg,
+                    rgba(255, 255, 255, var(--bg-veil-top, 0.86)) 0%,
+                    rgba(246, 247, 249, var(--bg-veil-mid, 0.82)) 50%,
+                    rgba(240, 242, 245, var(--bg-veil-bot, 0.88)) 100%
+                ),
+                url('https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/background.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            filter: grayscale(100%) contrast(var(--bg-contrast, 1.04)) brightness(var(--bg-brightness, 1));
+            transition: filter 0.25s ease;
+            pointer-events: none;
+        }
+
+        /* Control compacto de brillo del background (Bright) */
+        .bg-bright-control {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            border: 1px solid rgba(20, 22, 25, 0.12);
+            box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.14);
+            transition: background 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        .bg-bright-control:hover {
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 8px 22px -4px rgba(15, 23, 42, 0.20);
+        }
+
+        .bright-range-slider {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            height: 4px;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, #9aa2b1 0%, #141619 100%);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .bright-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #141619;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+            transition: transform 0.18s ease;
+        }
+
+        .bright-range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.18);
+        }
+
+        .bright-range-slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #141619;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+        }
+
+        /* Movimiento sutil del gradiente de los textos (vaivén lento, sin saltos) */
+        @keyframes rm-gradient-flow {
+            0%   { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rm-silver-black-text,
+            .rm-silver-white-text { animation: none; }
+        }
+
+        /* Efecto Gradiente Negro y Plateado estilo Real Madrid para todos los textos */
+        .rm-silver-black-text {
+            background: linear-gradient(
+                135deg,
+                #0d0f12 0%,
+                #2c313a 28%,
+                #7c8391 52%,
+                #1e2229 76%,
+                #0d0f12 100%
+            );
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: rm-gradient-flow 5.5s ease-in-out infinite alternate;
+        }
+
+        .rm-silver-white-text {
+            background: linear-gradient(
+                135deg,
+                #ffffff 0%,
+                #cbd1db 35%,
+                #ffffff 55%,
+                #a7b0be 82%,
+                #ffffff 100%
+            );
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: rm-gradient-flow 5.5s ease-in-out infinite alternate;
+        }
+
+
+        /* Reproductor arrastrable por todo el sitio + pista "drag me" en la esquina */
+        #music-player-card {
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: box-shadow 0.3s ease;
+        }
+
+        #music-player-card.is-dragging {
+            box-shadow: 0 34px 64px -14px rgba(0, 0, 0, 0.52),
+                        inset 0 1px 1.5px rgba(255, 255, 255, 0.42),
+                        inset 0 -1px 1px rgba(255, 255, 255, 0.12);
+        }
+
+        .player-drag-corner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 74px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            padding-left: 13px;
+            z-index: 2;
+            border-top-left-radius: inherit;
+        }
+
+        .player-drag-corner span {
+            font-size: 8.5px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            color: rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            transform: translateY(2px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .player-drag-corner:hover span,
+        #music-player-card.is-dragging .player-drag-corner span {
+            opacity: 0.85;
+            transform: translateY(0);
+        }
+
+        /* Cursor personalizado (imagen) con Shine Hover Inner */
+        #xat-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 2147483000;
+            pointer-events: none;
+            opacity: 0;
+            display: none;
+            will-change: transform;
+            --cursor-hotspot-x: 0px;
+            --cursor-hotspot-y: 0px;
+        }
+
+        #xat-cursor .xat-cursor-inner {
+            position: relative;
+            display: block;
+            margin-left: calc(var(--cursor-hotspot-x) * -1);
+            margin-top: calc(var(--cursor-hotspot-y) * -1);
+            transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+            transform-origin: var(--cursor-hotspot-x) var(--cursor-hotspot-y);
+            filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.35));
+        }
+
+        #xat-cursor img {
+            display: block;
+            height: 30px;
+            width: auto;
+            max-width: 64px;
+        }
+
+        #xat-cursor .xat-cursor-shine {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            -webkit-mask-image: url('https://xatimg.com/image/FOb4sUwPgITE.png');
+            mask-image: url('https://xatimg.com/image/FOb4sUwPgITE.png');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+        }
+
+        #xat-cursor .xat-cursor-shine::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -140%;
+            width: 85%;
+            height: 140%;
+            background: linear-gradient(115deg, rgba(255,255,255,0) 15%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 85%);
+            transform: skewX(-18deg);
+            opacity: 0;
+            transition: left 0.78s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease;
+        }
+
+        #xat-cursor.is-hover .xat-cursor-inner { transform: scale(1.12); }
+        #xat-cursor.is-hover .xat-cursor-shine::after { left: 165%; opacity: 1; }
+        #xat-cursor.is-down .xat-cursor-inner { transform: scale(0.92); }
+
+        @media (hover: hover) and (pointer: fine) {
+            html.has-xat-cursor,
+            html.has-xat-cursor * { cursor: none !important; }
+        }
+
+        @media (hover: none), (pointer: coarse) {
+            #xat-cursor { display: none !important; }
+        }
+
+
+        /* Protección: sin selección de texto ni arrastre de imágenes */
+        html, body, body * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        input, textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            user-select: text;
+        }
+
+        ::selection { background: transparent; }
+        ::-moz-selection { background: transparent; }
+
+        img {
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+
+        /* Bloqueo visual si se detectan herramientas de desarrollo abiertas */
+        html.rmm-locked body {
+            filter: blur(18px) !important;
+            pointer-events: none !important;
+        }
+
+        html.rmm-locked::after {
+            content: 'Herramientas de desarrollo deshabilitadas';
+            position: fixed;
+            inset: 0;
+            z-index: 2147483600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+            font: 600 13px/1.4 system-ui, sans-serif;
+            letter-spacing: 0.08em;
+            color: #2c313a;
+            background: rgba(255, 255, 255, 0.55);
+        }
+
+        /* Último partido del Real Madrid (API ESPN) */
+        #rm-last-match .rmm-card {
+            background: rgba(255, 255, 255, 0.74);
+            backdrop-filter: blur(14px) saturate(150%);
+            -webkit-backdrop-filter: blur(14px) saturate(150%);
+            border: 1px solid rgba(20, 22, 25, 0.12);
+            border-radius: 24px;
+            box-shadow: 0 12px 30px -12px rgba(15, 23, 42, 0.24),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.7);
+            padding: 12px 16px 14px;
+        }
+
+        .rmm-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .rmm-league {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .rmm-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            padding: 3px 9px;
+            border-radius: 9999px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #3b414d;
+            background: rgba(20, 22, 25, 0.06);
+            border: 1px solid rgba(20, 22, 25, 0.08);
+        }
+
+        .rmm-pill.is-live {
+            color: #15803d;
+            background: rgba(34, 197, 94, 0.14);
+            border-color: rgba(34, 197, 94, 0.35);
+        }
+
+        .rmm-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #9aa2b1;
+        }
+
+        .rmm-pill.is-live .rmm-dot {
+            background: #22c55e;
+            animation: rmm-pulse 1.6s ease-out infinite;
+        }
+
+        @keyframes rmm-pulse {
+            0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.65); }
+            100% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+        }
+
+        .rmm-main {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rmm-team {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .rmm-crest {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(15, 23, 42, 0.22));
+        }
+
+        .rmm-crest-fallback {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(20, 22, 25, 0.08);
+            font-size: 13px;
+            font-weight: 800;
+            color: #2c313a;
+            filter: none;
+        }
+
+        .rmm-name {
+            max-width: 100%;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            line-height: 1.15;
+            text-align: center;
+            text-transform: uppercase;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .rmm-mid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 84px;
+        }
+
+        .rmm-score {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .rmm-score b { font-weight: 600; opacity: 0.55; }
+
+        .rmm-date {
+            margin-top: 7px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-align: center;
+        }
+
+        .rmm-pens {
+            margin-top: 2px;
+            font-size: 9.5px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+        }
+
+        .rmm-goals {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 10px;
+            margin-top: 11px;
+            padding-top: 9px;
+            border-top: 1px solid rgba(20, 22, 25, 0.1);
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .rmm-col-home { text-align: right; }
+        .rmm-col-away { text-align: left; }
+
+        .rmm-ball {
+            align-self: start;
+            margin-top: 2px;
+            font-size: 12px;
+            color: #7c8391;
+        }
+
+        .rmm-sc { display: block; font-weight: 600; }
+        .rmm-sc em { margin-left: 5px; font-style: normal; font-weight: 500; opacity: 0.7; }
+
+        .rmm-note,
+        .rmm-loading {
+            text-align: center;
+            font-size: 10.5px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            opacity: 0.8;
+        }
+
+        .rmm-note { margin-top: 9px; }
+        .rmm-loading { padding: 18px 0; }
+
+        @media (min-width: 640px) {
+            #rm-last-match .rmm-card { padding: 14px 24px 16px; }
+            .rmm-crest { width: 52px; height: 52px; }
+            .rmm-score { font-size: 38px; }
+            .rmm-name { font-size: 12px; }
+            .rmm-goals { font-size: 12px; }
+        }
+
+
+        /* Icono Trade (SVG) con gradiente animado, igual que los textos */
+        .rm-trade-icon {
+            display: inline-block;
+            flex-shrink: 0;
+            background: linear-gradient(
+                135deg,
+                #0d0f12 0%,
+                #2c313a 28%,
+                #7c8391 52%,
+                #1e2229 76%,
+                #0d0f12 100%
+            );
+            background-size: 300% auto;
+            -webkit-mask-image: url('https://raw.githubusercontent.com/eamxat/JhonResources/9ee2cd4c3d99b00f996719a3ce9699a191ba1ac8/trade.svg');
+            mask-image: url('https://raw.githubusercontent.com/eamxat/JhonResources/9ee2cd4c3d99b00f996719a3ce9699a191ba1ac8/trade.svg');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+            animation: rm-gradient-flow 5.5s ease-in-out infinite alternate;
+        }
+
+        .group:hover .rm-trade-icon {
+            background: #ffffff;
+            animation: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rm-trade-icon { animation: none; }
+        }
+
+        /* Nota sobre FABY: dentro del card, encima del nombre */
+        .faby-love-note {
+            display: block;
+            white-space: nowrap;
+            font-size: 8px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        @media (min-width: 390px) {
+            .faby-love-note { font-size: 9px; }
+        }
+
+        @media (min-width: 640px) {
+            .faby-love-note {
+                font-size: 10.5px;
+                margin-bottom: 1px;
+            }
+        }
+
+        /* El card de FABY mantiene exactamente la altura del de JHON aunque tenga una línea extra */
+        header .faby-profile-pill {
+            padding-top: 0;
+            padding-bottom: 0;
+            min-height: 58px;
+        }
+
+        @media (min-width: 640px) {
+            header .faby-profile-pill { min-height: 62px; }
+        }
+
+        .faby-love-note .faby-heart {
+            color: #e11d48;
+            -webkit-text-fill-color: #e11d48;
+        }
+
+        /* Etiqueta "Último partido" bajo el resultado */
+        .rmm-tag {
+            margin-top: 7px;
+            padding: 2px 9px;
+            border: 1px solid rgba(20, 22, 25, 0.12);
+            border-radius: 9999px;
+            font-size: 8.5px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+
+        /* Bright: botón solo icono junto a Contact; al abrir el control se ocultan Contact, Chat y Trade */
+        #bg-bright-wrapper {
+            box-sizing: border-box;
+            flex-shrink: 0;
+            width: 30.5px;
+            height: 30.5px;
+            padding: 0;
+            justify-content: center;
+        }
+
+        @media (min-width: 640px) {
+            #bg-bright-wrapper { width: 30px; height: 30px; }
+        }
+
+        #bg-bright-wrapper.is-open {
+            width: auto;
+            padding: 0 12px;
+        }
+
+        nav.bright-open > a { display: none; }
+
+        /* Todo el círculo es clicable (también si la fuente de iconos tarda en cargar) */
+        #bg-bright-toggle-btn {
+            justify-content: center;
+            min-width: 18px;
+            min-height: 18px;
+        }
+
+        #bg-bright-wrapper:not(.is-open) #bg-bright-toggle-btn {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Canvas de Nieve Sutil */
+        #snow-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 35;
+            transition: opacity 0.45s ease;
+        }
+
+        #snow-canvas.is-paused {
+            opacity: 0;
+        }
+
+        /* Escudo del Real Madrid + Transición suave a logo2.svg en color blanco al hacer hover + Shine Hover */
+        .rm-crest-interactive {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .rm-crest-interactive:hover {
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        .rm-crest-base {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 8px 18px rgba(15, 23, 42, 0.22));
+            transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .rm-crest-white-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            opacity: 0;
+            filter: brightness(0) invert(1) drop-shadow(0 6px 14px rgba(15, 23, 42, 0.36));
+            transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+        }
+
+        .rm-crest-interactive:hover .rm-crest-base {
+            opacity: 0.12;
+        }
+
+        .rm-crest-interactive:hover .rm-crest-white-svg {
+            opacity: 1;
+        }
+
+        /* Reflejo luminoso (Shine Hover) enmascarado a la silueta del escudo */
+        .rm-crest-shine {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            -webkit-mask-image: url('https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/logo.webp');
+            mask-image: url('https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/logo.webp');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+            z-index: 3;
+        }
+
+        .rm-crest-shine::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -140%;
+            width: 85%;
+            height: 140%;
+            background: linear-gradient(
+                115deg,
+                rgba(255, 255, 255, 0) 15%,
+                rgba(255, 255, 255, 0.78) 50%,
+                rgba(255, 255, 255, 0) 85%
+            );
+            transform: skewX(-18deg);
+            opacity: 0;
+            transition: left 0.78s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease;
+        }
+
+        .rm-crest-interactive:hover .rm-crest-shine::after,
+        .intro-crest-wrap:hover .rm-crest-shine::after {
+            left: 165%;
+            opacity: 1;
+        }
+
+        .intro-crest-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .intro-crest-wrap:hover {
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        /* Distintivo / Parche 15 libre sin recuadro blanco + Shine Hover Inner */
+        .rm-patch-symbol {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 8px 18px rgba(15, 23, 42, 0.24));
+            transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), filter 0.38s ease;
+        }
+
+        .rm-patch-symbol:hover {
+            transform: translateY(-2px) scale(1.05);
+            filter: drop-shadow(0 12px 22px rgba(15, 23, 42, 0.32));
+        }
+
+        .rm-patch-shine {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            -webkit-mask-image: url('https://raw.githubusercontent.com/eamxat/JhonResources/898b3cda76ac4aaf2aa39d33a1eba1d80df5fed3/parche.svg');
+            mask-image: url('https://raw.githubusercontent.com/eamxat/JhonResources/898b3cda76ac4aaf2aa39d33a1eba1d80df5fed3/parche.svg');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+            z-index: 3;
+        }
+
+        .rm-patch-shine::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -140%;
+            width: 85%;
+            height: 140%;
+            background: linear-gradient(
+                115deg,
+                rgba(255, 255, 255, 0) 15%,
+                rgba(255, 255, 255, 0.85) 50%,
+                rgba(255, 255, 255, 0) 85%
+            );
+            transform: skewX(-18deg);
+            opacity: 0;
+            transition: left 0.78s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease;
+        }
+
+        .rm-patch-symbol:hover .rm-patch-shine::after {
+            left: 165%;
+            opacity: 1;
+        }
+
+        /* Tarjeta Fotográfica Editorial Superior */
+        .editorial-hero-box {
+            position: relative;
+            background: linear-gradient(155deg, #b5b9c2 0%, #9499a4 48%, #7a7f8b 100%);
+            border: 1px solid rgba(255, 255, 255, 0.82);
+            box-shadow: 0 22px 46px -14px rgba(15, 23, 42, 0.24),
+                        inset 0 1px 1.5px rgba(255, 255, 255, 0.65);
+        }
+
+        /* Degradado inferior profesional del RENDER 1 */
+        .render-one-fade {
+            filter: drop-shadow(0 12px 24px rgba(15, 23, 42, 0.22));
+            -webkit-mask-image: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 76%,
+                rgba(0, 0, 0, 0.45) 91%,
+                rgba(0, 0, 0, 0) 100%
+            );
+            mask-image: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 76%,
+                rgba(0, 0, 0, 0.45) 91%,
+                rgba(0, 0, 0, 0) 100%
+            );
+        }
+
+        /* Sombra de contacto realista pegada justo debajo de las piernas/pies del RENDER 2 */
+        .render-two-ground-shadow {
+            position: absolute;
+            bottom: 18px;
+            left: 49%;
+            transform: translateX(-50%);
+            width: 48%;
+            height: 12px;
+            border-radius: 9999px;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(15, 23, 42, 0.44) 0%,
+                rgba(15, 23, 42, 0.22) 45%,
+                rgba(15, 23, 42, 0) 76%
+            );
+            filter: blur(2.5px);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @media (min-width: 640px) { .render-two-ground-shadow { bottom: 24px; } }
+        @media (min-width: 768px) { .render-two-ground-shadow { bottom: 27px; } }
+
+        /* Glow blanco elegante al pasar el cursor sobre RENDER 2 */
+        .render-two-img {
+            position: relative;
+            top: 14px;
+            transition: filter 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            filter: drop-shadow(0 5px 12px rgba(15, 23, 42, 0.14));
+        }
+
+        .render-two-img:hover {
+            filter: drop-shadow(0 0 11px rgba(255, 255, 255, 0.94))
+                    drop-shadow(0 0 22px rgba(255, 255, 255, 0.65))
+                    drop-shadow(0 7px 16px rgba(15, 23, 42, 0.18));
+            transform: translateY(-2px);
+        }
+
+        .editorial-photo-card {
+            position: relative;
+            overflow: hidden;
+            background: #dcdfe6;
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 16px 36px -12px rgba(15, 23, 42, 0.20),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.6);
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.4s ease;
+        }
+
+        /* Shine Hover Inner para los cards de los GIF/fotos inferiores */
+        .editorial-photo-card::after {
+            content: '';
+            position: absolute;
+            top: -15%;
+            left: -130%;
+            width: 65%;
+            height: 130%;
+            background: linear-gradient(
+                115deg,
+                rgba(255, 255, 255, 0) 15%,
+                rgba(255, 255, 255, 0.48) 50%,
+                rgba(255, 255, 255, 0) 85%
+            );
+            transform: skewX(-20deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 15;
+            transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease;
+        }
+
+        .editorial-photo-card:hover::after {
+            left: 165%;
+            opacity: 1;
+        }
+
+        .editorial-photo-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 22px 42px -12px rgba(15, 23, 42, 0.26);
+        }
+
+        /* Reproductor Glass Gris Ahumado Translúcido */
+        .smoked-glass-player {
+            background: linear-gradient(
+                145deg,
+                rgba(48, 51, 58, 0.56) 0%,
+                rgba(28, 30, 35, 0.64) 100%
+            );
+            backdrop-filter: blur(18px) saturate(165%);
+            -webkit-backdrop-filter: blur(18px) saturate(165%);
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            box-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.44),
+                        inset 0 1px 1.5px rgba(255, 255, 255, 0.42),
+                        inset 0 -1px 1px rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-control-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.92);
+            border-radius: 9999px;
+            transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                        background 0.25s ease,
+                        color 0.25s ease,
+                        box-shadow 0.25s ease;
+        }
+
+        .glass-control-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.16);
+            transform: scale(1.08);
+        }
+
+        .glass-control-btn:active {
+            transform: scale(0.95);
+        }
+
+        .glass-control-btn.is-active-mode {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.24);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.35),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.55);
+        }
+
+        .glass-play-main-btn {
+            background: rgba(255, 255, 255, 0.95);
+            color: #181a1f;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.32),
+                        inset 0 1px 2px #ffffff;
+            transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.25s ease,
+                        background 0.25s ease;
+        }
+
+        .glass-play-main-btn:hover {
+            transform: scale(1.08);
+            background: #ffffff;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4),
+                        0 0 16px rgba(255, 255, 255, 0.45);
+        }
+
+        .glass-play-main-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Sliders blancos estilizados del reproductor Glass */
+        .editorial-range {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.34);
+            height: 4px;
+            border-radius: 999px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .editorial-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: transform 0.18s ease;
+        }
+
+        .editorial-range::-webkit-slider-thumb:hover {
+            transform: scale(1.22);
+        }
+
+        .editorial-range::-moz-range-track {
+            background: rgba(255, 255, 255, 0.34);
+            height: 4px;
+            border-radius: 999px;
+        }
+
+        .editorial-range::-moz-range-thumb {
+            width: 13px;
+            height: 13px;
+            border: none;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+
+        /* Lista de canciones dentro del reproductor Glass */
+        .playlist-mini-list {
+            max-height: 112px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.45) rgba(255, 255, 255, 0.08);
+        }
+
+        .playlist-mini-list::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .playlist-mini-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 9999px;
+        }
+
+        .playlist-mini-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.45);
+            border-radius: 9999px;
+        }
+
+        .playlist-track-row {
+            transition: background 0.22s ease, border-color 0.22s ease;
+        }
+
+        .playlist-track-row:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .playlist-track-row.active-track {
+            background: rgba(255, 255, 255, 0.20);
+            border-color: rgba(255, 255, 255, 0.45);
+        }
+
+        /* Avatares e indicadores de estado API */
+        .avatar-circle-inner {
+            position: relative;
+            overflow: hidden;
+            border-radius: 9999px;
+            transform: translateZ(0);
+        }
+
+        .avatar-circle-inner img {
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .avatar-circle-inner:hover img {
+            transform: scale(1.12);
+        }
+
+        .faby-avatar-zoom {
+            object-position: 50% 20%;
+            transform: scale(1.42);
+            transform-origin: 50% 24%;
+        }
+
+        .jhon-avatar-popover {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            width: 225px;
+            border-radius: 20px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.86);
+            backdrop-filter: blur(16px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            border: 1px solid rgba(20, 22, 25, 0.12);
+            box-shadow: 0 20px 42px -10px rgba(15, 23, 42, 0.28);
+            transform-origin: 24px top;
+            transform: translateY(-8px) scale(0.85);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.28s ease,
+                        visibility 0.28s ease;
+            z-index: 90;
+        }
+
+        .jhon-avatar-popover.is-open {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* Tooltip e interacción Married exclusiva en FABY */
+        .married-badge-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .married-tooltip {
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background: rgba(20, 22, 25, 0.92);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1;
+            padding: 4px 8px;
+            border-radius: 7px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+            z-index: 60;
+        }
+
+        .married-badge-wrap.is-tooltip-visible .married-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .floating-married-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9990;
+            will-change: transform, opacity;
+            user-select: none;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.25));
+            animation: floatMarriedHeart var(--heart-dur, 1150ms) cubic-bezier(0.2, 0.85, 0.32, 1) forwards;
+        }
+
+        @keyframes floatMarriedHeart {
+            0% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(0.45) rotate(0deg);
+            }
+            30% {
+                opacity: var(--heart-op, 0.95);
+                transform: translate3d(calc(var(--tx, 0px) * 0.45), calc(var(--ty, -50px) * 0.45), 0) scale(var(--heart-scale, 1)) rotate(calc(var(--rot, 10deg) * 0.5));
+            }
+            100% {
+                opacity: 0;
+                transform: translate3d(var(--tx, 0px), var(--ty, -75px), 0) scale(calc(var(--heart-scale, 1) * 0.72)) rotate(var(--rot, 15deg));
+            }
+        }
+
+        /* Partículas flotantes de trofeos y copas al hacer clic */
+        .floating-trophy-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9990;
+            will-change: transform, opacity;
+            user-select: none;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 6px rgba(15, 23, 42, 0.22));
+            animation: floatCelebrationTrophy var(--trophy-dur, 1300ms) cubic-bezier(0.22, 0.85, 0.34, 1) forwards;
+        }
+
+        @keyframes floatCelebrationTrophy {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, 4px, 0) scale(0.4) rotate(0deg);
+            }
+            20% {
+                opacity: var(--trophy-op, 0.95);
+                transform: translate3d(calc(var(--tx, 0px) * 0.25), calc(var(--ty, -70px) * 0.25), 0) scale(var(--trophy-scale, 1)) rotate(calc(var(--rot, 12deg) * 0.35));
+            }
+            75% {
+                opacity: var(--trophy-op, 0.9);
+            }
+            100% {
+                opacity: 0;
+                transform: translate3d(var(--tx, 0px), var(--ty, -95px), 0) scale(calc(var(--trophy-scale, 1) * 0.78)) rotate(var(--rot, 16deg));
+            }
+        }
+
+        @keyframes pulse-online {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.65); }
+            50% { transform: scale(1.06); box-shadow: 0 0 0 5px rgba(34, 197, 94, 0); }
+        }
+        @keyframes pulse-away {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.65); }
+            50% { transform: scale(1.06); box-shadow: 0 0 0 5px rgba(245, 158, 11, 0); }
+        }
+        @keyframes pulse-offline {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.65); }
+            50% { transform: scale(1.06); box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+        }
+
+        .status-dot-online { background-color: #22c55e; animation: pulse-online 2.2s infinite; }
+        .status-dot-away { background-color: #f59e0b; animation: pulse-away 2.4s infinite; }
+        .status-dot-offline { background-color: #ef4444; animation: pulse-offline 2.2s infinite; }
+
+        /* Texto Vertical Editorial en el borde derecho de la composición superior */
+        .vertical-editorial-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        /* Pantalla de Inicio Editorial Deportiva */
+        .intro-screen-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: linear-gradient(
+                145deg,
+                rgba(255, 255, 255, 0.84) 0%,
+                rgba(238, 240, 244, 0.88) 50%,
+                rgba(224, 227, 233, 0.90) 100%
+            );
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                        visibility 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .intro-screen-overlay.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: scale(1.03);
+        }
+
+        .intro-enter-btn {
+            position: relative;
+            overflow: hidden;
+            padding: 13px 46px;
+            border-radius: 9999px;
+            background: rgba(24, 26, 31, 0.82);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            box-shadow: 0 14px 30px -6px rgba(15, 23, 42, 0.32),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.38);
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.32s ease,
+                        background 0.32s ease;
+            cursor: pointer;
+        }
+
+        .intro-enter-btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            background: rgba(16, 18, 22, 0.95);
+            box-shadow: 0 18px 36px -6px rgba(15, 23, 42, 0.42),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.55);
+        }
+
+        .intro-enter-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Firma Footer Editorial */
+        .footer-signature-link {
+            display: inline-block;
+            opacity: 0.72;
+            text-decoration: none;
+            padding: 3px 12px;
+            border-radius: 9999px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .footer-signature-link:hover {
+            transform: translateY(-1px);
+            opacity: 1;
+        }
+
+        /* Scrollbar limpio */
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #eef0f4;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b4bac4;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="flex items-start justify-center pt-8 sm:pt-12 pb-10 px-4 sm:px-6">
+
+    <!-- ==========================================
+         PANTALLA DE INICIO – EDITORIAL SPORTS INTRO (ÚNICAMENTE LOGOTIPO PRINCIPAL + SHINE HOVER)
+         ========================================== -->
+    <div id="intro-screen" class="intro-screen-overlay" role="dialog" aria-modal="true" aria-label="Pantalla de bienvenida JHON">
+        <div class="flex flex-col items-center justify-center max-w-[460px] w-full text-center gap-6">
+            <div class="relative flex items-center justify-center">
+                <div class="intro-crest-wrap w-20 h-24 sm:w-24 sm:h-28 cursor-pointer select-none">
+                    <img 
+                        src="https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/logo.webp" 
+                        alt="Real Madrid Escudo" 
+                        class="w-full h-full object-contain drop-shadow-[0_12px_24px_rgba(15,23,42,0.18)] select-none"
+                    >
+                    <span class="rm-crest-shine" aria-hidden="true"></span>
+                </div>
+            </div>
+
+            <div class="space-y-1.5">
+                <h1 class="rm-silver-black-text text-2xl sm:text-3xl font-extrabold tracking-[0.22em] uppercase">
+                    JHON
+                </h1>
+                <p class="rm-silver-black-text text-xs sm:text-sm font-semibold tracking-[0.26em] uppercase">
+                    (121997)
+                </p>
+            </div>
+
+            <button 
+                type="button" 
+                onclick="enterMainSite()" 
+                class="intro-enter-btn select-none"
+                aria-label="Ingresar al perfil de JHON"
+            >
+                <span class="rm-silver-white-text">INGRESAR</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Fondo Principal Monocromático + Canvas de Nieve Sutil -->
+    <div id="site-bg-el" class="site-bg" aria-hidden="true"></div>
+    <canvas id="snow-canvas" aria-hidden="true"></canvas>
+
+    <!-- Contenedor Principal Centrado -->
+    <!-- Cursor personalizado (imagen) -->
+    <div id="xat-cursor" aria-hidden="true">
+        <span class="xat-cursor-inner">
+            <img src="https://xatimg.com/image/FOb4sUwPgITE.png" alt="">
+            <span class="xat-cursor-shine"></span>
+        </span>
+    </div>
+
+    <main class="w-full max-w-[680px] mx-auto relative z-10">
+
+        <!-- BARRA SUPERIOR: CONTROL DE BRILLO DEL FONDO (BRIGHT) Y PERFILES JHON / FABY -->
+        <header class="flex flex-wrap items-center justify-between gap-3 sm:gap-4 mt-3 sm:mt-6 mb-2 sm:mb-3 px-1 relative z-40">
+            <!-- Contenedor de Perfiles: JHON y FABY -->
+            <div class="flex flex-wrap items-center justify-end gap-3 sm:gap-4 ml-auto">
+                <!-- Perfil Principal: JHON (Avatar MjeWd1SYnYh9.png + API Online Jhon) -->
+                <div class="flex items-center gap-3 relative bg-white/75 backdrop-blur-md border border-black/10 rounded-full py-1.5 pl-2 pr-3.5 shadow-sm">
+                    <div 
+                        id="jhon-avatar-trigger"
+                        onclick="toggleJhonAvatarExpand(event)"
+                        role="button"
+                        tabindex="0"
+                        aria-expanded="false"
+                        aria-label="Ampliar fotografía de JHON"
+                        class="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full p-[2px] bg-white border border-black/15 shadow-sm flex-shrink-0 cursor-pointer"
+                    >
+                        <div class="avatar-circle-inner w-full h-full rounded-full overflow-hidden bg-editorial-200">
+                            <img 
+                                src="https://xatimg.com/image/MjeWd1SYnYh9.png" 
+                                alt="JHON Avatar" 
+                                class="w-full h-full object-cover object-center"
+                            >
+                        </div>
+                        <!-- Indicador de estado API Online de JHON -->
+                        <span 
+                            id="jhon-status-dot"
+                            class="status-dot-offline absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white z-10" 
+                            aria-label="Estado de JHON"
+                        ></span>
+                    </div>
+
+                    <!-- Vista ampliada al hacer clic en el avatar de JHON -->
+                    <div id="jhon-avatar-popover" class="jhon-avatar-popover" onclick="toggleJhonAvatarExpand(event)">
+                        <div class="relative rounded-[14px] overflow-hidden bg-editorial-100 border border-black/10">
+                            <img 
+                                src="https://xatimg.com/image/MjeWd1SYnYh9.png" 
+                                alt="JHON Fotografía Completa" 
+                                class="w-full h-auto block object-contain rounded-[13px] cursor-pointer"
+                            >
+                            <button 
+                                type="button"
+                                onclick="closeJhonAvatarExpand(event)"
+                                class="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/55 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-md transition"
+                                aria-label="Cerrar vista ampliada"
+                            >
+                                <i class="ph-bold ph-x text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-center">
+                        <div class="flex items-center gap-1.5">
+                            <h2 class="rm-silver-black-text font-extrabold text-sm sm:text-base tracking-wide leading-none">
+                                JHON
+                            </h2>
+                        </div>
+                        <span id="jhon-status-text" class="rm-silver-black-text text-[11px] font-semibold leading-none mt-1">
+                            Desconectado
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Perfil Secundario: FABY (Avatar ZBI9bMWy0p6h.png + Corazón Married + Planeta Saturno -> https://xat.me/Faby + API Online Faby) -->
+                <div class="faby-profile-pill flex items-center gap-3 bg-white/75 backdrop-blur-md border border-black/10 rounded-full py-1.5 pl-2 pr-3.5 shadow-sm">
+                    <div class="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full p-[2px] bg-white border border-black/15 shadow-sm flex-shrink-0">
+                        <div class="avatar-circle-inner w-full h-full rounded-full overflow-hidden bg-editorial-200">
+                            <img 
+                                src="https://xatimg.com/image/ZBI9bMWy0p6h.png" 
+                                alt="FABY Avatar" 
+                                class="faby-avatar-zoom w-full h-full object-cover"
+                            >
+                        </div>
+                        <!-- Corazón Married y efectos exclusivos en FABY -->
+                        <div 
+                            id="fabi-married-badge"
+                            class="married-badge-wrap absolute -bottom-0.5 -left-0.5 z-20 cursor-pointer outline-none"
+                            role="button"
+                            aria-label="married"
+                            onmouseenter="showMarriedTooltip()"
+                            onmouseleave="hideMarriedTooltip()"
+                            onclick="handleMarriedHeartClick(event)"
+                        >
+                            <img 
+                                src="https://beta.xat.com/assets/DYp8AWP5.svg" 
+                                alt="married" 
+                                class="w-4 h-4 object-contain block drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] pointer-events-none"
+                            >
+                            <span class="married-tooltip" role="tooltip">married</span>
+                        </div>
+                        <!-- Indicador de estado API Online de FABY -->
+                        <span 
+                            id="fabi-status-dot"
+                            class="status-dot-offline absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white z-10" 
+                            aria-label="Estado de FABY"
+                        ></span>
+                    </div>
+
+                    <div class="relative flex flex-col justify-center">
+                        <span class="faby-love-note rm-silver-black-text">Mi amor, mi esposa<span class="faby-heart">&#9829;</span></span>
+                        <div class="flex items-center gap-1.5">
+                            <h2 class="rm-silver-black-text font-extrabold text-sm sm:text-base tracking-wide leading-none">
+                                FABY
+                            </h2>
+                            <a 
+                                href="https://xat.me/Faby" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                class="w-5 h-5 rounded-full bg-editorial-900/10 hover:bg-editorial-900 hover:text-white flex items-center justify-center text-editorial-800 transition"
+                                aria-label="Ir a xat.me/Faby"
+                            >
+                                <i class="ph-fill ph-planet text-xs"></i>
+                            </a>
+                        </div>
+                        <span id="fabi-status-text" class="rm-silver-black-text text-[11px] font-semibold leading-none mt-1">
+                            Desconectado
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==========================================
+             COMPOSICIÓN EDITORIAL POR CAPAS (FIEL A UI.JPG)
+             ========================================== -->
+        <section id="editorial-showcase" class="relative mt-7 sm:mt-9">
+
+            <!-- ESCUDO DEL REAL MADRID SUPERIOR IZQUIERDO + SÍMBOLO PARCHE 15 SIN RECUADRO BLANCO Y CON SHINE HOVER INNER -->
+            <div class="absolute -top-6 -left-2 sm:-top-9 sm:-left-6 z-40 flex items-center gap-2.5">
+                <div class="rm-crest-interactive w-16 h-20 sm:w-[82px] sm:h-[104px] select-none cursor-pointer" aria-label="Escudo Real Madrid">
+                    <img 
+                        src="https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/logo.webp" 
+                        alt="Escudo Real Madrid" 
+                        class="rm-crest-base"
+                    >
+                    <img 
+                        src="https://raw.githubusercontent.com/eamxat/JhonResources/39dd52798410cdb3b197b07f6b6c6aab233db4ce/logo2.svg" 
+                        alt="Escudo Real Madrid Blanco" 
+                        class="rm-crest-white-svg"
+                    >
+                    <span class="rm-crest-shine" aria-hidden="true"></span>
+                </div>
+            </div>
+
+            <!-- 1. PRIMER RENDER — IMAGEN SUPERIOR (cristiano1.png sobresaliendo y con degradado inferior) -->
+            <div class="editorial-hero-box rounded-[28px] sm:rounded-[34px] relative overflow-visible h-[340px] sm:h-[430px] md:h-[470px] w-full">
+                <img 
+                    src="https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/cristiano1.png" 
+                    alt="JHON Superior Render" 
+                    class="render-one-fade pointer-events-none select-none block absolute bottom-0 left-1/2 -translate-x-1/2 h-[395px] sm:h-[505px] md:h-[555px] w-auto max-w-none z-10"
+                >
+
+                <!-- Texto vertical editorial en el borde derecho -->
+                <div class="absolute top-5 right-5 sm:top-6 sm:right-7 z-20 flex flex-col items-end pointer-events-none select-none">
+                    <div class="vertical-editorial-text flex items-center gap-2 text-white/95 drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)] pr-0.5">
+                        <span class="text-[10px]">▼</span>
+                        <span class="rm-silver-white-text text-xs sm:text-[13px] font-bold tracking-[0.16em]">Jhon (121997)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. REPRODUCTOR GLASS FLOTANTE CENTRADO SOBRE LA COMPOSICIÓN FOTOGRÁFICA -->
+            <div id="music-player-slot" class="-mt-24 sm:-mt-32 md:-mt-36 h-[238px] sm:h-[263px]">
+            <div id="music-player-card" class="smoked-glass-player relative z-30 mx-auto w-[80%] sm:w-[300px] rounded-[20px] px-4 py-3 text-white">
+                <!-- Esquina arrastrable: pista sutil "drag me" -->
+                <div class="player-drag-corner" aria-hidden="true"><span>drag me</span></div>
+
+                <!-- Título y subtítulo centrados como en la referencia -->
+                <div class="text-center mb-2">
+                    <h3 id="player-title" class="rm-silver-white-text font-bold text-sm sm:text-[15px] tracking-wide leading-tight drop-shadow-sm">
+                        Written In The Stars
+                    </h3>
+                    <p id="player-artist" class="rm-silver-white-text text-[11px] sm:text-[11.5px] font-medium tracking-wider mt-0.5 opacity-90">
+                        Tinie Tempah ft. Eric Turner
+                    </p>
+                </div>
+
+                <!-- Barra de Progreso Blanca + Tiempos -->
+                <div class="w-full mb-2">
+                    <input 
+                        id="player-progress" 
+                        type="range" 
+                        min="0" 
+                        max="100" 
+                        value="0" 
+                        class="editorial-range w-full"
+                        aria-label="Progreso de canción"
+                    >
+                    <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-medium text-white/75 mt-1">
+                        <span id="player-current-time" class="rm-silver-white-text">0:00</span>
+                        <span id="player-status-note" class="rm-silver-white-text text-[8.5px] tracking-wider uppercase opacity-80">Listo</span>
+                        <span id="player-duration" class="rm-silver-white-text">3:39</span>
+                    </div>
+                </div>
+
+                <!-- Controles Principales: Aleatorio, Anterior, Play/Pausa, Siguiente, Repetición -->
+                <div class="flex items-center justify-center gap-3 sm:gap-4 my-1.5">
+                    <button 
+                        type="button" 
+                        id="player-shuffle-btn" 
+                        onclick="toggleShuffleMusic()" 
+                        class="glass-control-btn w-8 h-8" 
+                        aria-label="Aleatorio"
+                    >
+                        <i class="ph-bold ph-shuffle text-base sm:text-lg"></i>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        onclick="prevTrack3D()" 
+                        class="glass-control-btn w-8 h-8" 
+                        aria-label="Canción anterior"
+                    >
+                        <i class="ph-fill ph-skip-back text-lg sm:text-xl"></i>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        id="player-play-btn" 
+                        onclick="togglePlayMusic()" 
+                        class="glass-play-main-btn w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center" 
+                        aria-label="Reproducir o Pausar"
+                    >
+                        <i id="player-play-icon" class="ph-fill ph-play text-base sm:text-lg ml-0.5"></i>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        onclick="nextTrack3D()" 
+                        class="glass-control-btn w-8 h-8" 
+                        aria-label="Siguiente canción"
+                    >
+                        <i class="ph-fill ph-skip-forward text-lg sm:text-xl"></i>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        id="player-repeat-btn" 
+                        onclick="toggleRepeatMusic()" 
+                        class="glass-control-btn w-8 h-8" 
+                        aria-label="Repetición"
+                    >
+                        <i class="ph-bold ph-repeat text-base sm:text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Fila Secundaria: Lista de pistas, Control de Volumen y Favorito -->
+                <div class="flex items-center justify-between gap-2 mt-2 pt-1.5 border-t border-white/15">
+                    <button 
+                        type="button" 
+                        onclick="togglePlaylistDrawer()" 
+                        class="glass-control-btn px-2 py-1 gap-1.5 text-[10px] font-semibold tracking-wide"
+                        aria-label="Mostrar lista de canciones"
+                    >
+                        <i class="ph-bold ph-queue text-sm"></i>
+                        <span class="rm-silver-white-text hidden sm:inline">Playlist</span>
+                    </button>
+
+                    <div class="flex items-center gap-2 flex-1 max-w-[180px]">
+                        <i class="ph-fill ph-speaker-low text-xs text-white/80"></i>
+                        <input 
+                            id="player-volume" 
+                            type="range" 
+                            min="0" 
+                            max="1" 
+                            step="0.02" 
+                            value="0.75" 
+                            class="editorial-range flex-1"
+                            aria-label="Volumen"
+                        >
+                        <i class="ph-fill ph-speaker-high text-xs text-white/80"></i>
+                    </div>
+
+                    <button 
+                        type="button" 
+                        id="player-like-btn" 
+                        onclick="togglePlayerLike()" 
+                        class="glass-control-btn w-7 h-7" 
+                        aria-label="Me gusta"
+                    >
+                        <i class="ph-fill ph-heart text-sm text-white/80"></i>
+                    </button>
+                </div>
+
+                <!-- Lista desplegable de pistas de JHON -->
+                <div id="playlist-tracks-container" class="playlist-mini-list hidden flex-col gap-1 mt-3 pt-2 border-t border-white/15">
+                </div>
+            
+            </div>
+        </div>
+
+            <!-- 3. TARJETAS FOTOGRÁFICAS INFERIORES + RENDER FRONTAL SUPERPUESTO (cristiano2.png) -->
+            <div class="relative -mt-12 sm:-mt-16 md:-mt-20">
+                <div class="flex flex-col gap-3 sm:gap-4 relative z-10">
+                    <!-- Primera tarjeta: flag.gif (conservando animación GIF + shine hover inner) -->
+                    <div class="editorial-photo-card rounded-[24px] sm:rounded-[30px] h-[125px] sm:h-[165px] md:h-[180px] w-full">
+                        <img 
+                            src="https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/flag.gif" 
+                            alt="Bandera Real Madrid" 
+                            class="w-full h-full object-cover object-center block select-none pointer-events-none"
+                        >
+                    </div>
+
+                    <!-- Segunda tarjeta: winners.jpg (desplazada hacia abajo dentro del cuadro para mostrar la parte superior + shine hover inner) -->
+                    <div class="editorial-photo-card rounded-[24px] sm:rounded-[30px] h-[145px] sm:h-[185px] md:h-[205px] w-full">
+                        <img 
+                            src="https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/winners.jpg" 
+                            alt="Real Madrid Champions" 
+                            class="w-full h-full object-cover object-[50%_10%] block select-none pointer-events-none"
+                        >
+                    </div>
+                </div>
+
+                <!-- Segundo render frontal (cristiano2.png): pegado a la sombra justo debajo de sus piernas + glow blanco elegante al pasar el cursor -->
+                <div class="pointer-events-none select-none z-20 absolute left-1/2 -translate-x-1/2 -bottom-14 sm:-bottom-20 md:-bottom-24 w-[250px] sm:w-[345px] md:w-[400px] flex justify-center">
+                    <span class="render-two-ground-shadow" aria-hidden="true"></span>
+                    <img 
+                        src="https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/cristiano2.png" 
+                        alt="JHON Foreground Render" 
+                        class="render-two-img pointer-events-auto relative z-10 w-full h-auto object-contain block"
+                    >
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ==========================================
+             PIE EDITORIAL INFERIOR (JHON + BOTONES CONTACT/CHAT/TRADE DEBAJO + RELOJ/CALENDARIO EN ESPAÑOL)
+             ========================================== -->
+        <section class="mt-20 sm:mt-28 px-2 flex flex-wrap items-end justify-between gap-4 relative z-20">
+            <!-- Bloque Editorial Izquierdo: JHON + Iconos Contact, Chat y Trade justo debajo -->
+            <div class="flex flex-col gap-2.5">
+                <div class="flex items-start gap-2">
+                    <span class="text-editorial-900 text-xs mt-1 select-none">▶</span>
+                    <div class="leading-snug">
+                        <div class="rm-silver-black-text font-extrabold text-sm sm:text-base tracking-tight">
+                            JHON
+                        </div>
+                        <div class="rm-silver-black-text text-xs sm:text-[13px] font-semibold">
+                            (121997)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Iconos Contact, Chat y Trade ubicados justo debajo de JHON -->
+                <nav class="flex flex-wrap items-center gap-2" aria-label="Enlaces de contacto y comercio de JHON">
+                    <!-- Control de Brillo del Background (solo icono; al abrirse oculta Contact, Chat y Trade) -->
+                    <div id="bg-bright-wrapper" class="bg-bright-control inline-flex items-center gap-2 rounded-full px-2.5 py-1.5">
+                        <button 
+                            type="button" 
+                            id="bg-bright-toggle-btn"
+                            onclick="toggleBgBrightDrawer(event)"
+                            ondblclick="resetBgBrightness(event)"
+                            class="inline-flex items-center gap-1.5 text-editorial-800 hover:text-editorial-900 transition cursor-pointer"
+                            aria-label="Ajustar brillo del fondo"
+                            title="Bright"
+                        >
+                            <i class="ph-bold ph-sun text-sm sm:text-base" aria-hidden="true"></i>
+                        </button>
+                        <div id="bg-bright-slider-box" class="hidden items-center gap-1.5 pr-1">
+                            <input 
+                                id="bg-bright-slider" 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value="50" 
+                                oninput="updateBackgroundBrightness(this.value)"
+                                class="bright-range-slider w-20 sm:w-24"
+                                aria-label="Nivel de brillo del fondo"
+                            >
+                            <button 
+                                type="button" 
+                                onclick="resetBgBrightness(event)"
+                                class="text-[10px] font-bold text-editorial-500 hover:text-editorial-900 px-1 transition"
+                                aria-label="Restablecer brillo por defecto"
+                            >
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+
+                    <a 
+                        href="https://forum.xat.com/profile/41787/" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="group inline-flex items-center gap-1.5 bg-white/80 hover:bg-editorial-900 text-editorial-800 hover:text-white backdrop-blur-md border border-black/10 rounded-full px-3 py-1.5 text-[11px] sm:text-xs font-bold tracking-wide shadow-sm transition duration-300"
+                        aria-label="Contact"
+                    >
+                        <i class="ph-fill ph-envelope-simple text-xs sm:text-sm text-editorial-900 group-hover:text-white transition"></i>
+                        <span class="rm-silver-black-text group-hover:text-white group-hover:[background:none] group-hover:[-webkit-text-fill-color:#ffffff]">Contact</span>
+                    </a>
+
+                    <a 
+                        href="https://xat.com/Jh0n" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="group inline-flex items-center gap-1.5 bg-white/80 hover:bg-editorial-900 text-editorial-800 hover:text-white backdrop-blur-md border border-black/10 rounded-full px-3 py-1.5 text-[11px] sm:text-xs font-bold tracking-wide shadow-sm transition duration-300"
+                        aria-label="Chat"
+                    >
+                        <!-- Icono Planeta Saturno distinto al de FABY -->
+                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 text-editorial-900 group-hover:text-white transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="5.2" fill="currentColor" fill-opacity="0.22"></circle>
+                            <ellipse cx="12" cy="12" rx="10.2" ry="3.4" transform="rotate(-24 12 12)"></ellipse>
+                        </svg>
+                        <span class="rm-silver-black-text group-hover:text-white group-hover:[background:none] group-hover:[-webkit-text-fill-color:#ffffff]">Chat</span>
+                    </a>
+
+                    <a 
+                        href="https://xat.com/trade" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="group inline-flex items-center gap-1.5 bg-white/80 hover:bg-editorial-900 text-editorial-800 hover:text-white backdrop-blur-md border border-black/10 rounded-full px-3 py-1.5 text-[11px] sm:text-xs font-bold tracking-wide shadow-sm transition duration-300"
+                        aria-label="Trade"
+                    >
+                        <span class="rm-trade-icon w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true"></span>
+                        <i class="rm-trade-fallback ph-bold ph-arrows-left-right text-xs sm:text-sm text-editorial-900 group-hover:text-white transition" style="display:none" aria-hidden="true"></i>
+                        <span class="rm-silver-black-text group-hover:text-white group-hover:[background:none] group-hover:[-webkit-text-fill-color:#ffffff]">Trade</span>
+                    </a>
+                </nav>
+
+                <!-- Parche 15 (clic me) + Bright, justo debajo de Contact, Chat y Trade -->
+                <div class="flex flex-wrap items-start gap-4 mt-0.5">
+                    <div class="flex flex-col items-center gap-0.5">
+                        <div 
+                            onclick="handleTrophyCelebrationClick(event)"
+                            role="button"
+                            tabindex="0"
+                            aria-label="Parche 15 Champions League"
+                            class="rm-patch-symbol w-14 h-16 sm:w-16 sm:h-[76px] cursor-pointer select-none"
+                        >
+                            <img 
+                                src="https://raw.githubusercontent.com/eamxat/JhonResources/898b3cda76ac4aaf2aa39d33a1eba1d80df5fed3/parche.svg" 
+                                alt="Parche 15 Champions League" 
+                                class="w-full h-full object-contain block select-none pointer-events-none"
+                            >
+                            <span class="rm-patch-shine" aria-hidden="true"></span>
+                        </div>
+                        <span class="text-[9px] font-medium tracking-[0.16em] text-editorial-500 opacity-60 select-none pointer-events-none">clic me</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bloque Editorial Derecho: Reloj y Calendario Funcional Más Grande en Español -->
+            <div class="text-right leading-tight">
+                <div class="flex items-center justify-end gap-1.5 text-sm sm:text-base font-bold text-editorial-900">
+                    <span id="clock-weekday" class="rm-silver-black-text">Domingo</span>
+                    <span class="rm-silver-black-text">•</span>
+                    <span id="clock-month-year" class="rm-silver-black-text">22 de Noviembre 2026</span>
+                    <span class="text-editorial-900 text-xs select-none">◀</span>
+                </div>
+                <div class="flex items-baseline justify-end gap-1.5 mt-1">
+                    <span id="clock-hm" class="rm-silver-black-text text-2xl sm:text-3xl font-extrabold tracking-tight leading-none">
+                        03:54
+                    </span>
+                    <span id="clock-sec" class="rm-silver-black-text text-xs sm:text-sm font-bold opacity-80">
+                        00s
+                    </span>
+                    <span id="clock-ampm" class="rm-silver-black-text text-xs sm:text-sm font-extrabold uppercase">
+                        a. m.
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             ÚLTIMO PARTIDO DEL REAL MADRID (API gratuita de ESPN, sin clave, actualización en tiempo real)
+             ========================================== -->
+        <section id="rm-last-match" class="mt-6 sm:mt-8 px-2 relative z-20" aria-live="polite" aria-label="Último partido del Real Madrid">
+            <div class="rmm-card">
+                <div id="rmm-body">
+                    <div class="rmm-loading rm-silver-black-text">Cargando último partido…</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FIRMA FOOTER SUTIL Y PEQUEÑA -->
+        <footer class="mt-6 sm:mt-8 text-center select-none">
+            <a 
+                href="https://xat.me/eam96" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="footer-signature-link text-[9px] sm:text-[10px] font-semibold tracking-[0.20em] uppercase"
+            >
+                <span class="rm-silver-black-text">XATFRAME DESIGN © EAM96</span>
+            </a>
+        </footer>
+
+    </main>
+
+    <!-- ==========================================
+         LÓGICA JAVASCRIPT: MARRIED HEART (FABY), TROFEOS, RELOJ, API ONLINE, REPRODUCTOR GLASS Y NIEVE
+         ========================================== -->
+    <script>
+        // 0. Interacción del SVG Heart (married) exclusiva de FABY con explosión suave de corazones y tooltip
+        const MARRIED_HEART_SVG_URL = 'https://beta.xat.com/assets/DYp8AWP5.svg';
+        let activeHeartParticles = 0;
+        const MAX_ACTIVE_HEARTS = 24;
+        let marriedTooltipTouchTimer = null;
+
+        function showMarriedTooltip() {
+            const badge = document.getElementById('fabi-married-badge');
+            if (!badge) return;
+            if (marriedTooltipTouchTimer) {
+                clearTimeout(marriedTooltipTouchTimer);
+                marriedTooltipTouchTimer = null;
+            }
+            badge.classList.add('is-tooltip-visible');
+        }
+
+        function hideMarriedTooltip() {
+            const badge = document.getElementById('fabi-married-badge');
+            if (!badge) return;
+            if (marriedTooltipTouchTimer) {
+                clearTimeout(marriedTooltipTouchTimer);
+                marriedTooltipTouchTimer = null;
+            }
+            badge.classList.remove('is-tooltip-visible');
+        }
+
+        function handleMarriedHeartClick(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            const badge = document.getElementById('fabi-married-badge');
+            if (!badge) return;
+
+            spawnMarriedHeartsBurst(badge);
+
+            const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+            if (isTouch) {
+                showMarriedTooltip();
+                marriedTooltipTouchTimer = setTimeout(() => {
+                    hideMarriedTooltip();
+                }, 2000);
+            }
+        }
+
+        function spawnMarriedHeartsBurst(originEl) {
+            if (!originEl || activeHeartParticles >= MAX_ACTIVE_HEARTS) return;
+
+            const rect = originEl.getBoundingClientRect();
+            const startX = rect.left + rect.width / 2;
+            const startY = rect.top + rect.height / 2;
+            const count = 7;
+
+            for (let i = 0; i < count; i++) {
+                if (activeHeartParticles >= MAX_ACTIVE_HEARTS) break;
+                activeHeartParticles++;
+
+                const heart = document.createElement('img');
+                heart.src = MARRIED_HEART_SVG_URL;
+                heart.alt = '';
+                heart.setAttribute('aria-hidden', 'true');
+                heart.className = 'floating-married-heart';
+
+                const size = 12 + Math.floor(Math.random() * 8);
+                const spreadX = (Math.random() - 0.5) * 68;
+                const riseY = -(38 + Math.random() * 52);
+                const rot = (Math.random() - 0.5) * 46;
+                const scale = (0.78 + Math.random() * 0.42).toFixed(2);
+                const duration = Math.round(900 + Math.random() * 450);
+                const delay = Math.round(i * 38);
+
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+                heart.style.left = `${startX - size / 2}px`;
+                heart.style.top = `${startY - size / 2}px`;
+                heart.style.setProperty('--tx', `${spreadX.toFixed(1)}px`);
+                heart.style.setProperty('--ty', `${riseY.toFixed(1)}px`);
+                heart.style.setProperty('--rot', `${rot.toFixed(1)}deg`);
+                heart.style.setProperty('--heart-scale', scale);
+                heart.style.setProperty('--heart-dur', `${duration}ms`);
+                heart.style.animationDelay = `${delay}ms`;
+
+                document.body.appendChild(heart);
+
+                const cleanup = () => {
+                    if (heart.parentNode) {
+                        heart.parentNode.removeChild(heart);
+                    }
+                    activeHeartParticles = Math.max(0, activeHeartParticles - 1);
+                };
+
+                heart.addEventListener('animationend', cleanup, { once: true });
+                setTimeout(cleanup, duration + delay + 120);
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const badge = document.getElementById('fabi-married-badge');
+            if (badge && !badge.contains(e.target)) {
+                hideMarriedTooltip();
+            }
+        });
+
+        // 0B. Efecto interactivo de copas y trofeos flotantes (trofeo.png) al hacer clic en el parche 15
+        const TROPHY_PNG_URL = 'https://raw.githubusercontent.com/eamxat/JhonResources/refs/heads/main/trofeo.png';
+        let activeTrophyParticles = 0;
+        const MAX_ACTIVE_TROPHIES = 28;
+
+        (function preloadTrophyAsset() {
+            const img = new Image();
+            img.src = TROPHY_PNG_URL;
+        })();
+
+        function handleTrophyCelebrationClick(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+
+            let originX = window.innerWidth / 2;
+            let originY = window.innerHeight / 2;
+
+            if (event && typeof event.clientX === 'number' && typeof event.clientY === 'number' && (event.clientX !== 0 || event.clientY !== 0)) {
+                originX = event.clientX;
+                originY = event.clientY;
+            } else if (event && event.currentTarget) {
+                const rect = event.currentTarget.getBoundingClientRect();
+                originX = rect.left + rect.width / 2;
+                originY = rect.top + rect.height / 2;
+            }
+
+            spawnTrophyCelebrationBurst(originX, originY);
+        }
+
+        function spawnTrophyCelebrationBurst(startX, startY) {
+            if (activeTrophyParticles >= MAX_ACTIVE_TROPHIES) return;
+
+            const count = 9;
+            for (let i = 0; i < count; i++) {
+                if (activeTrophyParticles >= MAX_ACTIVE_TROPHIES) break;
+                activeTrophyParticles++;
+
+                const trophy = document.createElement('img');
+                trophy.src = TROPHY_PNG_URL;
+                trophy.alt = '';
+                trophy.setAttribute('aria-hidden', 'true');
+                trophy.className = 'floating-trophy-particle';
+
+                const size = 28 + Math.floor(Math.random() * 18);
+                const offsetX = (Math.random() - 0.5) * 52;
+                const offsetY = (Math.random() - 0.5) * 22;
+                const spreadX = (Math.random() - 0.5) * 110;
+                const riseY = -(64 + Math.random() * 78);
+                const rot = (Math.random() - 0.5) * 48;
+                const scale = (0.88 + Math.random() * 0.44).toFixed(2);
+                const opacity = (0.86 + Math.random() * 0.14).toFixed(2);
+                const duration = Math.round(1150 + Math.random() * 550);
+                const delay = Math.round(i * 42);
+
+                trophy.style.width = `${size}px`;
+                trophy.style.height = `${size}px`;
+                trophy.style.left = `${startX + offsetX - size / 2}px`;
+                trophy.style.top = `${startY + offsetY - size / 2}px`;
+                trophy.style.setProperty('--tx', `${spreadX.toFixed(1)}px`);
+                trophy.style.setProperty('--ty', `${riseY.toFixed(1)}px`);
+                trophy.style.setProperty('--rot', `${rot.toFixed(1)}deg`);
+                trophy.style.setProperty('--trophy-scale', scale);
+                trophy.style.setProperty('--trophy-op', opacity);
+                trophy.style.setProperty('--trophy-dur', `${duration}ms`);
+                trophy.style.animationDelay = `${delay}ms`;
+
+                document.body.appendChild(trophy);
+
+                const cleanup = () => {
+                    if (trophy.parentNode) {
+                        trophy.parentNode.removeChild(trophy);
+                    }
+                    activeTrophyParticles = Math.max(0, activeTrophyParticles - 1);
+                };
+
+                trophy.addEventListener('animationend', cleanup, { once: true });
+                setTimeout(cleanup, duration + delay + 140);
+            }
+        }
+
+        // 1. Reloj y Calendario Funcional en Tiempo Real en Español (es-MX)
+        function capitalizeSpanishWord(str) {
+            if (!str) return '';
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const ampm = hours >= 12 ? 'p. m.' : 'a. m.';
+
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+
+            const paddedMinutes = String(minutes).padStart(2, '0');
+            const paddedSeconds = String(seconds).padStart(2, '0');
+
+            const hmElement = document.getElementById('clock-hm');
+            const secElement = document.getElementById('clock-sec');
+            const ampmElement = document.getElementById('clock-ampm');
+
+            if (hmElement) hmElement.textContent = `${hours}:${paddedMinutes}`;
+            if (secElement) secElement.textContent = `${paddedSeconds}s`;
+            if (ampmElement) ampmElement.textContent = ampm;
+
+            const rawWeekday = new Intl.DateTimeFormat('es-MX', { weekday: 'long' }).format(now);
+            const rawMonth = new Intl.DateTimeFormat('es-MX', { month: 'long' }).format(now);
+            const dayNum = now.getDate();
+            const year = now.getFullYear();
+
+            const weekdayName = capitalizeSpanishWord(rawWeekday.replace(/[.,]/g, ''));
+            const monthName = capitalizeSpanishWord(rawMonth.replace(/[.,]/g, ''));
+
+            const weekdayEl = document.getElementById('clock-weekday');
+            const monthYearEl = document.getElementById('clock-month-year');
+
+            if (weekdayEl) weekdayEl.textContent = weekdayName;
+            if (monthYearEl) monthYearEl.textContent = `${dayNum} de ${monthName} ${year}`;
+        }
+
+        updateLiveClock();
+        setInterval(updateLiveClock, 1000);
+
+        // 2. Sistema de Estado Online con API Real independiente para FABI y JHON
+        const STATUS_ENDPOINTS = {
+            fabi: {
+                url: 'https://illuxat.com/api/online/Faby',
+                dotId: 'fabi-status-dot',
+                textId: 'fabi-status-text'
+            },
+            jhon: {
+                url: 'https://illuxat.com/api/online/Jhon',
+                dotId: 'jhon-status-dot',
+                textId: 'jhon-status-text'
+            }
+        };
+
+        function extractApiStatusString(payload) {
+            if (!payload) return '';
+            if (typeof payload === 'string') return payload.trim();
+            if (typeof payload === 'object') {
+                const candidates = [
+                    payload.status,
+                    payload.state,
+                    payload.online,
+                    payload.result,
+                    payload.message,
+                    payload.data && payload.data.status,
+                    payload.data && payload.data.state,
+                    payload.data
+                ];
+                for (const item of candidates) {
+                    if (typeof item === 'string' && item.trim().length > 0) {
+                        return item.trim();
+                    }
+                }
+            }
+            return '';
+        }
+
+        function applyProfileStatus(dotEl, textEl, rawStatus) {
+            if (!dotEl || !textEl) return;
+
+            const normalized = String(rawStatus || '').trim().toLowerCase();
+
+            dotEl.classList.remove('status-dot-online', 'status-dot-away', 'status-dot-offline');
+            dotEl.removeAttribute('title');
+
+            if (normalized === 'online') {
+                dotEl.classList.add('status-dot-online');
+                textEl.textContent = 'En línea';
+            } else if (normalized === 'available') {
+                dotEl.classList.add('status-dot-away');
+                textEl.textContent = 'Ausente';
+            } else {
+                dotEl.classList.add('status-dot-offline');
+                textEl.textContent = 'Desconectado';
+            }
+        }
+
+        async function checkSingleUserStatus(profileConfig) {
+            const dotEl = document.getElementById(profileConfig.dotId);
+            const textEl = document.getElementById(profileConfig.textId);
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+            try {
+                const response = await fetch(profileConfig.url, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json, text/plain, */*' },
+                    cache: 'no-store',
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    applyProfileStatus(dotEl, textEl, 'unknown');
+                    return;
+                }
+
+                const contentType = response.headers.get('content-type') || '';
+                let statusValue = '';
+
+                if (contentType.includes('application/json')) {
+                    const jsonData = await response.json();
+                    statusValue = extractApiStatusString(jsonData);
+                } else {
+                    const rawText = await response.text();
+                    try {
+                        const parsed = JSON.parse(rawText);
+                        statusValue = extractApiStatusString(parsed);
+                    } catch (_) {
+                        statusValue = rawText.trim();
+                    }
+                }
+
+                applyProfileStatus(dotEl, textEl, statusValue);
+            } catch (error) {
+                clearTimeout(timeoutId);
+                applyProfileStatus(dotEl, textEl, 'unknown');
+            }
+        }
+
+        function refreshAllStatuses() {
+            checkSingleUserStatus(STATUS_ENDPOINTS.fabi);
+            checkSingleUserStatus(STATUS_ENDPOINTS.jhon);
+        }
+
+        refreshAllStatuses();
+        setInterval(refreshAllStatuses, 30000);
+
+        // 2B. Control de Brillo del Background (mantiene el brillo/opacidad por defecto en el valor 50)
+        function setBrightDrawer(open) {
+            const sliderBox = document.getElementById('bg-bright-slider-box');
+            const wrapper = document.getElementById('bg-bright-wrapper');
+            if (!sliderBox) return;
+            sliderBox.classList.toggle('hidden', !open);
+            sliderBox.classList.toggle('flex', open);
+            if (wrapper) {
+                wrapper.classList.toggle('is-open', open);
+                const nav = wrapper.closest('nav');
+                if (nav) nav.classList.toggle('bright-open', open);
+            }
+        }
+
+        function toggleBgBrightDrawer(event) {
+            if (event) event.stopPropagation();
+            const sliderBox = document.getElementById('bg-bright-slider-box');
+            if (!sliderBox) return;
+            setBrightDrawer(sliderBox.classList.contains('hidden'));
+        }
+
+        function updateBackgroundBrightness(val) {
+            const bgEl = document.getElementById('site-bg-el');
+            if (!bgEl) return;
+            const numeric = Math.min(100, Math.max(0, Number(val)));
+            if (numeric === 50) {
+                bgEl.style.setProperty('--bg-veil-top', '0.86');
+                bgEl.style.setProperty('--bg-veil-mid', '0.82');
+                bgEl.style.setProperty('--bg-veil-bot', '0.88');
+                bgEl.style.setProperty('--bg-contrast', '1.04');
+                bgEl.style.setProperty('--bg-brightness', '1');
+                return;
+            }
+            const factor = (numeric - 50) / 50;
+            const topVeil = Math.min(0.96, Math.max(0.32, 0.86 - factor * 0.48));
+            const midVeil = Math.min(0.94, Math.max(0.28, 0.82 - factor * 0.48));
+            const botVeil = Math.min(0.96, Math.max(0.36, 0.88 - factor * 0.46));
+            const contrast = (1.04 + factor * 0.14).toFixed(2);
+            const brightness = (1 + factor * 0.06).toFixed(2);
+
+            bgEl.style.setProperty('--bg-veil-top', topVeil.toFixed(2));
+            bgEl.style.setProperty('--bg-veil-mid', midVeil.toFixed(2));
+            bgEl.style.setProperty('--bg-veil-bot', botVeil.toFixed(2));
+            bgEl.style.setProperty('--bg-contrast', contrast);
+            bgEl.style.setProperty('--bg-brightness', brightness);
+        }
+
+        function resetBgBrightness(event) {
+            if (event) event.stopPropagation();
+            const slider = document.getElementById('bg-bright-slider');
+            if (slider) slider.value = '50';
+            updateBackgroundBrightness(50);
+        }
+
+        document.addEventListener('click', (e) => {
+            const brightWrapper = document.getElementById('bg-bright-wrapper');
+            const sliderBox = document.getElementById('bg-bright-slider-box');
+            if (brightWrapper && sliderBox && !sliderBox.classList.contains('hidden')) {
+                if (!brightWrapper.contains(e.target)) {
+                    setBrightDrawer(false);
+                }
+            }
+        });
+
+        // 3. Reproductor Glass con Canción Principal (track1.mp3) y Pistas de JHON
+        const PLAYLIST_JHON = [
+            {
+                title: 'Written In The Stars',
+                artist: 'Tinie Tempah ft. Eric Turner',
+                durationLabel: '3:39',
+                src: 'track1.mp3'
+            },
+            {
+                title: 'JHON — Midnight Legend',
+                artist: 'Real Madrid Edition',
+                durationLabel: '3:42',
+                src: null
+            },
+            {
+                title: 'JHON — The Champion',
+                artist: 'Real Madrid Edition',
+                durationLabel: '4:05',
+                src: null
+            },
+            {
+                title: 'JHON — Golden Memories',
+                artist: 'Real Madrid Edition',
+                durationLabel: '3:28',
+                src: null
+            },
+            {
+                title: 'JHON — Eternal Glory',
+                artist: 'Real Madrid Edition',
+                durationLabel: '3:54',
+                src: null
+            }
+        ];
+
+        let currentTrackIndex = 0;
+        let isPlayingMusic = false;
+        let isShuffleEnabled = false;
+        let isRepeatEnabled = false;
+        const audioPlayer = new Audio();
+        audioPlayer.preload = 'none';
+        audioPlayer.volume = 0.75;
+
+        function renderPlaylistUI() {
+            const listContainer = document.getElementById('playlist-tracks-container');
+            if (listContainer) {
+                listContainer.innerHTML = PLAYLIST_JHON.map((track, idx) => `
+                    <button 
+                        type="button"
+                        id="playlist-row-${idx}"
+                        onclick="selectTrackByIndex(${idx})"
+                        class="playlist-track-row w-full flex items-center justify-between gap-3 px-3 py-1.5 rounded-xl border border-transparent text-left"
+                    >
+                        <div class="min-w-0 flex-1 leading-tight">
+                            <div class="rm-silver-white-text font-bold text-xs truncate">${track.title}</div>
+                            <div class="rm-silver-white-text text-[10px] font-medium opacity-75 truncate mt-0.5">${track.artist}</div>
+                        </div>
+                        <span class="rm-silver-white-text text-[10px] font-semibold opacity-80 flex-shrink-0">${track.durationLabel}</span>
+                    </button>
+                `).join('');
+            }
+            updateTrackDisplayUI();
+        }
+
+        function formatSeconds(sec) {
+            if (!isFinite(sec) || sec < 0) return '0:00';
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${m}:${String(s).padStart(2, '0')}`;
+        }
+
+        function updateTrackDisplayUI() {
+            const track = PLAYLIST_JHON[currentTrackIndex];
+            const titleEl = document.getElementById('player-title');
+            const artistEl = document.getElementById('player-artist');
+            const durationEl = document.getElementById('player-duration');
+            const statusNoteEl = document.getElementById('player-status-note');
+
+            if (titleEl) titleEl.textContent = track.title;
+            if (artistEl) artistEl.textContent = track.artist;
+            if (durationEl) durationEl.textContent = track.src ? '0:00' : track.durationLabel;
+            if (statusNoteEl) {
+                statusNoteEl.textContent = track.src ? 'Listo' : 'Audio pendiente';
+            }
+
+            PLAYLIST_JHON.forEach((_, idx) => {
+                const row = document.getElementById(`playlist-row-${idx}`);
+                if (row) {
+                    row.classList.toggle('active-track', idx === currentTrackIndex);
+                }
+            });
+        }
+
+        renderPlaylistUI();
+
+        function enterMainSite() {
+            const introScreen = document.getElementById('intro-screen');
+            if (introScreen) {
+                introScreen.classList.add('is-hidden');
+            }
+
+            currentTrackIndex = 0;
+            updateTrackDisplayUI();
+
+            const firstTrack = PLAYLIST_JHON[0];
+            if (firstTrack && firstTrack.src) {
+                audioPlayer.src = firstTrack.src;
+                audioPlayer.play().then(() => {
+                    isPlayingMusic = true;
+                    syncPlayIcon();
+                }).catch(() => {
+                    isPlayingMusic = false;
+                    syncPlayIcon();
+                });
+            } else {
+                isPlayingMusic = false;
+                syncPlayIcon();
+            }
+
+            if (typeof window.enableSnowEffect === 'function') {
+                window.enableSnowEffect();
+            }
+        }
+        window.enterMainSite = enterMainSite;
+
+        function loadCurrentTrack(autoPlay) {
+            const track = PLAYLIST_JHON[currentTrackIndex];
+            const progressEl = document.getElementById('player-progress');
+            const currentTimeEl = document.getElementById('player-current-time');
+            const statusNoteEl = document.getElementById('player-status-note');
+
+            audioPlayer.pause();
+            isPlayingMusic = false;
+            syncPlayIcon();
+
+            if (progressEl) progressEl.value = 0;
+            if (currentTimeEl) currentTimeEl.textContent = '0:00';
+            updateTrackDisplayUI();
+
+            if (!track || !track.src) {
+                audioPlayer.removeAttribute('src');
+                if (autoPlay && statusNoteEl) {
+                    statusNoteEl.textContent = 'Sin audio asignado';
+                    setTimeout(() => {
+                        if (statusNoteEl && !PLAYLIST_JHON[currentTrackIndex].src) {
+                            statusNoteEl.textContent = 'Audio pendiente';
+                        }
+                    }, 2000);
+                }
+                return;
+            }
+
+            audioPlayer.src = track.src;
+            if (autoPlay) {
+                audioPlayer.play().then(() => {
+                    isPlayingMusic = true;
+                    syncPlayIcon();
+                }).catch(() => {
+                    isPlayingMusic = false;
+                    syncPlayIcon();
+                });
+            }
+        }
+
+        function syncPlayIcon() {
+            const playIcon = document.getElementById('player-play-icon');
+            if (!playIcon) return;
+            if (isPlayingMusic) {
+                playIcon.classList.remove('ph-play', 'ml-0.5');
+                playIcon.classList.add('ph-pause');
+            } else {
+                playIcon.classList.remove('ph-pause');
+                playIcon.classList.add('ph-play', 'ml-0.5');
+            }
+        }
+
+        function togglePlayMusic() {
+            const track = PLAYLIST_JHON[currentTrackIndex];
+            const statusNoteEl = document.getElementById('player-status-note');
+
+            if (!track || !track.src) {
+                isPlayingMusic = false;
+                syncPlayIcon();
+                if (statusNoteEl) {
+                    statusNoteEl.textContent = 'Sin audio asignado';
+                    setTimeout(() => {
+                        if (statusNoteEl && !PLAYLIST_JHON[currentTrackIndex].src) {
+                            statusNoteEl.textContent = 'Audio pendiente';
+                        }
+                    }, 2000);
+                }
+                return;
+            }
+
+            if (isPlayingMusic) {
+                audioPlayer.pause();
+                isPlayingMusic = false;
+                syncPlayIcon();
+            } else {
+                if (!audioPlayer.src) {
+                    audioPlayer.src = track.src;
+                }
+                audioPlayer.play().then(() => {
+                    isPlayingMusic = true;
+                    syncPlayIcon();
+                }).catch(() => {
+                    isPlayingMusic = false;
+                    syncPlayIcon();
+                });
+            }
+        }
+
+        function nextTrack3D() {
+            if (isShuffleEnabled && PLAYLIST_JHON.length > 1) {
+                let nextIdx = currentTrackIndex;
+                while (nextIdx === currentTrackIndex) {
+                    nextIdx = Math.floor(Math.random() * PLAYLIST_JHON.length);
+                }
+                currentTrackIndex = nextIdx;
+            } else {
+                currentTrackIndex = (currentTrackIndex + 1) % PLAYLIST_JHON.length;
+            }
+            loadCurrentTrack(isPlayingMusic);
+        }
+
+        function prevTrack3D() {
+            if (audioPlayer.src && audioPlayer.currentTime > 3) {
+                audioPlayer.currentTime = 0;
+                return;
+            }
+            currentTrackIndex = (currentTrackIndex - 1 + PLAYLIST_JHON.length) % PLAYLIST_JHON.length;
+            loadCurrentTrack(isPlayingMusic);
+        }
+
+        function selectTrackByIndex(index) {
+            if (index < 0 || index >= PLAYLIST_JHON.length) return;
+            currentTrackIndex = index;
+            loadCurrentTrack(true);
+        }
+
+        function toggleShuffleMusic() {
+            isShuffleEnabled = !isShuffleEnabled;
+            const btn = document.getElementById('player-shuffle-btn');
+            if (btn) btn.classList.toggle('is-active-mode', isShuffleEnabled);
+        }
+
+        function toggleRepeatMusic() {
+            isRepeatEnabled = !isRepeatEnabled;
+            audioPlayer.loop = isRepeatEnabled;
+            const btn = document.getElementById('player-repeat-btn');
+            if (btn) btn.classList.toggle('is-active-mode', isRepeatEnabled);
+        }
+
+        function togglePlaylistDrawer() {
+            const drawer = document.getElementById('playlist-tracks-container');
+            if (!drawer) return;
+            if (drawer.classList.contains('hidden')) {
+                drawer.classList.remove('hidden');
+                drawer.classList.add('flex');
+            } else {
+                drawer.classList.add('hidden');
+                drawer.classList.remove('flex');
+            }
+        }
+
+        let isPlayerLiked = false;
+        function togglePlayerLike() {
+            isPlayerLiked = !isPlayerLiked;
+            const likeBtn = document.getElementById('player-like-btn');
+            if (!likeBtn) return;
+            likeBtn.classList.toggle('is-active-mode', isPlayerLiked);
+            const icon = likeBtn.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('text-white', isPlayerLiked);
+                icon.classList.toggle('text-white/80', !isPlayerLiked);
+            }
+        }
+
+        const progressInput = document.getElementById('player-progress');
+        if (progressInput) {
+            progressInput.addEventListener('input', (e) => {
+                const track = PLAYLIST_JHON[currentTrackIndex];
+                if (!track || !track.src || !isFinite(audioPlayer.duration)) {
+                    e.target.value = 0;
+                    return;
+                }
+                const pct = parseFloat(e.target.value) || 0;
+                audioPlayer.currentTime = (pct / 100) * audioPlayer.duration;
+            });
+        }
+
+        const volumeInput = document.getElementById('player-volume');
+        if (volumeInput) {
+            volumeInput.addEventListener('input', (e) => {
+                audioPlayer.volume = Math.min(1, Math.max(0, parseFloat(e.target.value) || 0));
+            });
+        }
+
+        audioPlayer.addEventListener('timeupdate', () => {
+            const currentTimeEl = document.getElementById('player-current-time');
+            const progressEl = document.getElementById('player-progress');
+            if (currentTimeEl) currentTimeEl.textContent = formatSeconds(audioPlayer.currentTime);
+            if (progressEl && isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
+                progressEl.value = ((audioPlayer.currentTime / audioPlayer.duration) * 100).toFixed(1);
+            }
+        });
+
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            const durationEl = document.getElementById('player-duration');
+            if (durationEl && isFinite(audioPlayer.duration)) {
+                durationEl.textContent = formatSeconds(audioPlayer.duration);
+            }
+        });
+
+        audioPlayer.addEventListener('ended', () => {
+            if (isRepeatEnabled) {
+                audioPlayer.currentTime = 0;
+                audioPlayer.play().catch(() => {});
+            } else {
+                nextTrack3D();
+            }
+        });
+
+        // 4. Vista ampliada del avatar de JHON
+        function toggleJhonAvatarExpand(event) {
+            if (event) event.stopPropagation();
+            const popover = document.getElementById('jhon-avatar-popover');
+            const trigger = document.getElementById('jhon-avatar-trigger');
+            if (!popover) return;
+            const willOpen = !popover.classList.contains('is-open');
+            popover.classList.toggle('is-open', willOpen);
+            if (trigger) trigger.setAttribute('aria-expanded', String(willOpen));
+        }
+
+        function closeJhonAvatarExpand(event) {
+            if (event) event.stopPropagation();
+            const popover = document.getElementById('jhon-avatar-popover');
+            const trigger = document.getElementById('jhon-avatar-trigger');
+            if (!popover) return;
+            popover.classList.remove('is-open');
+            if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        }
+
+        document.addEventListener('click', (e) => {
+            const popover = document.getElementById('jhon-avatar-popover');
+            const trigger = document.getElementById('jhon-avatar-trigger');
+            if (popover && popover.classList.contains('is-open')) {
+                if (!popover.contains(e.target) && (!trigger || !trigger.contains(e.target))) {
+                    closeJhonAvatarExpand();
+                }
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeJhonAvatarExpand();
+            }
+        });
+
+        // 5. Efecto de nieve sutil optimizado + toggle al hacer clic en una zona libre del fondo
+        (function initEditorialSnowEffect() {
+            const canvas = document.getElementById('snow-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+            let flakes = [];
+            let isSnowEnabled = true;
+
+            function getOptimalFlakeCount() {
+                return width < 640 ? 32 : 52;
+            }
+
+            function resizeSnowCanvas() {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+
+            function createFlake(startAtTop) {
+                return {
+                    x: Math.random() * width,
+                    y: startAtTop ? -10 - Math.random() * 40 : Math.random() * height,
+                    radius: 1.4 + Math.random() * 2.4,
+                    speedY: 0.45 + Math.random() * 0.95,
+                    driftAmp: 0.25 + Math.random() * 0.55,
+                    driftFreq: 0.008 + Math.random() * 0.014,
+                    phase: Math.random() * Math.PI * 2,
+                    opacity: 0.45 + Math.random() * 0.45
+                };
+            }
+
+            function populateFlakes() {
+                const targetCount = getOptimalFlakeCount();
+                flakes = [];
+                for (let i = 0; i < targetCount; i++) {
+                    flakes.push(createFlake(false));
+                }
+            }
+
+            function animateSnow() {
+                if (isSnowEnabled && !document.hidden) {
+                    ctx.clearRect(0, 0, width, height);
+                    for (let i = 0; i < flakes.length; i++) {
+                        const f = flakes[i];
+                        f.phase += f.driftFreq;
+                        f.y += f.speedY;
+                        f.x += Math.sin(f.phase) * f.driftAmp;
+
+                        if (f.y > height + 10) {
+                            flakes[i] = createFlake(true);
+                            continue;
+                        }
+                        if (f.x > width + 10) f.x = -10;
+                        if (f.x < -10) f.x = width + 10;
+
+                        ctx.beginPath();
+                        ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 255, 255, ${f.opacity})`;
+                        ctx.shadowColor = 'rgba(15, 23, 42, 0.22)';
+                        ctx.shadowBlur = 3;
+                        ctx.fill();
+                    }
+                    ctx.shadowBlur = 0;
+                }
+                requestAnimationFrame(animateSnow);
+            }
+
+            window.enableSnowEffect = function () {
+                isSnowEnabled = true;
+                canvas.classList.remove('is-paused');
+            };
+
+            function toggleSnowByBackgroundClick(e) {
+                const introScreen = document.getElementById('intro-screen');
+                if (introScreen && !introScreen.classList.contains('is-hidden')) {
+                    return;
+                }
+
+                const blockedSelector = [
+                    'button',
+                    'a',
+                    'input',
+                    'header',
+                    'footer',
+                    '#bg-bright-wrapper',
+                    '#editorial-showcase',
+                    '#music-player-card',
+                    '.jhon-avatar-popover',
+                    '.married-badge-wrap'
+                ].join(',');
+
+                if (e.target && e.target.closest(blockedSelector)) {
+                    return;
+                }
+
+                isSnowEnabled = !isSnowEnabled;
+                if (isSnowEnabled) {
+                    canvas.classList.remove('is-paused');
+                } else {
+                    canvas.classList.add('is-paused');
+                    ctx.clearRect(0, 0, width, height);
+                }
+            }
+
+            window.addEventListener('resize', () => {
+                resizeSnowCanvas();
+                populateFlakes();
+            }, { passive: true });
+            document.addEventListener('click', toggleSnowByBackgroundClick);
+
+            resizeSnowCanvas();
+            populateFlakes();
+            requestAnimationFrame(animateSnow);
+        })();
+
+        // 6. Protección integral de código: eliminación de leyendas nativas (title), bloqueo de F12, clic derecho, atajos de inspección y consola
+        (function initCodeAndConsoleProtection() {
+            document.querySelectorAll('[title]').forEach((el) => el.removeAttribute('title'));
+
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                return false;
+            }, { capture: true });
+
+            document.addEventListener('dragstart', (e) => {
+                e.preventDefault();
+                return false;
+            }, { capture: true });
+
+            window.addEventListener('keydown', (e) => {
+                const key = (e.key || '').toUpperCase();
+                const code = e.keyCode || e.which;
+                const ctrlOrCmd = e.ctrlKey || e.metaKey;
+
+                const isF12 = e.key === 'F12' || code === 123;
+                const isDevToolsShortcut = ctrlOrCmd && e.shiftKey && ['I', 'J', 'C', 'K'].includes(key);
+                const isMacAltInspector = e.metaKey && e.altKey && ['I', 'J', 'C', 'U'].includes(key);
+                const isViewSourceOrSave = ctrlOrCmd && !e.shiftKey && ['U', 'S', 'P'].includes(key);
+
+                if (isF12 || isDevToolsShortcut || isMacAltInspector || isViewSourceOrSave) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+            }, { capture: true });
+
+            const noop = function () {};
+            const consoleMethods = ['log', 'debug', 'info', 'warn', 'error', 'table', 'dir', 'dirxml', 'trace', 'group', 'groupCollapsed', 'groupEnd', 'profile', 'profileEnd', 'count', 'assert'];
+            try {
+                if (window.console) {
+                    consoleMethods.forEach((method) => {
+                        if (typeof window.console[method] === 'function') {
+                            window.console[method] = noop;
+                        }
+                    });
+                }
+            } catch (_) {}
+
+            setInterval(() => {
+                try {
+                    if (window.console && typeof window.console.clear === 'function') {
+                        window.console.clear();
+                    }
+                } catch (_) {}
+            }, 1200);
+        })();
+    </script>
+
+    <script>
+    // Reproductor arrastrable por todo el sitio + cursor personalizado con Shine Hover Inner
+    (function () {
+        // ---- Arrastrar el reproductor ----
+        const card = document.getElementById('music-player-card');
+        if (card) {
+            const INTERACTIVE = 'button, input, a, select, textarea, .playlist-mini-list, [role="button"]';
+            let ox = 0, oy = 0, sx = 0, sy = 0, dragging = false, pid = null, bounds = null;
+
+            function clampOffsets() {
+                if (!bounds) return;
+                ox = Math.min(Math.max(ox, bounds.minX), bounds.maxX);
+                oy = Math.min(Math.max(oy, bounds.minY), bounds.maxY);
+            }
+
+            function computeBounds() {
+                const r = card.getBoundingClientRect();
+                const docL = r.left + window.scrollX - ox;
+                const docT = r.top + window.scrollY - oy;
+                const docW = document.documentElement.clientWidth;
+                const docH = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+                bounds = {
+                    minX: -docL,
+                    maxX: docW - r.width - docL,
+                    minY: -docT,
+                    maxY: docH - r.height - docT
+                };
+            }
+
+            card.addEventListener('pointerdown', function (e) {
+                if (e.button !== undefined && e.button !== 0) return;
+                if (e.target.closest(INTERACTIVE)) return;
+                dragging = true;
+                pid = e.pointerId;
+                sx = e.pageX - ox;
+                sy = e.pageY - oy;
+                computeBounds();
+                try { card.setPointerCapture(pid); } catch (err) {}
+                card.classList.add('is-dragging');
+                card.style.zIndex = '60';
+                e.preventDefault();
+            });
+
+            card.addEventListener('pointermove', function (e) {
+                if (!dragging || e.pointerId !== pid) return;
+                ox = e.pageX - sx;
+                oy = e.pageY - sy;
+                clampOffsets();
+                card.style.transform = 'translate(' + ox + 'px,' + oy + 'px)';
+            });
+
+            function endDrag(e) {
+                if (!dragging || (e && e.pointerId !== pid)) return;
+                dragging = false;
+                try { card.releasePointerCapture(pid); } catch (err) {}
+                card.classList.remove('is-dragging');
+                card.style.zIndex = (ox !== 0 || oy !== 0) ? '45' : '';
+            }
+            card.addEventListener('pointerup', endDrag);
+            card.addEventListener('pointercancel', endDrag);
+
+            window.addEventListener('resize', function () {
+                if (ox === 0 && oy === 0) return;
+                computeBounds();
+                clampOffsets();
+                card.style.transform = 'translate(' + ox + 'px,' + oy + 'px)';
+            });
+        }
+
+        // ---- Cursor personalizado ----
+        const cur = document.getElementById('xat-cursor');
+        if (!cur || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+        const HOVER_SEL = 'a, button, input, select, textarea, label, summary, [role="button"], [onclick], .cursor-pointer, .player-drag-corner, #music-player-card';
+        let tx = -100, ty = -100, ticking = false, shown = false;
+
+        const probe = new Image();
+        probe.onload = function () { document.documentElement.classList.add('has-xat-cursor'); };
+        probe.src = 'https://xatimg.com/image/FOb4sUwPgITE.png';
+
+        function paint() {
+            ticking = false;
+            cur.style.transform = 'translate3d(' + tx + 'px,' + ty + 'px,0)';
+        }
+
+        document.addEventListener('pointermove', function (e) {
+            if (e.pointerType && e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
+            tx = e.clientX; ty = e.clientY;
+            if (!shown) { shown = true; cur.style.display = 'block'; cur.style.opacity = '1'; }
+            if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+        }, { passive: true });
+
+        document.addEventListener('pointerover', function (e) {
+            const hit = e.target && e.target.closest ? e.target.closest(HOVER_SEL) : null;
+            cur.classList.toggle('is-hover', !!hit);
+        }, { passive: true });
+
+        document.addEventListener('pointerdown', function () { cur.classList.add('is-down'); }, { passive: true });
+        document.addEventListener('pointerup', function () { cur.classList.remove('is-down'); }, { passive: true });
+        document.documentElement.addEventListener('mouseleave', function () { cur.style.opacity = '0'; });
+        document.documentElement.addEventListener('mouseenter', function () { if (shown) cur.style.opacity = '1'; });
+    })();
+    </script>
+
+    <script>
+    // ==========================================================
+    // ÚLTIMO PARTIDO DEL REAL MADRID — ESPN (pública, gratuita, sin API key)
+    // Respaldo: TheSportsDB (clave pública gratuita "3")
+    // ==========================================================
+    (function () {
+        const ESPN = 'https://site.api.espn.com/apis/site/v2/sports/soccer';
+        const TEAM_ID = '86';                                   // Real Madrid en ESPN
+        const SPORTSDB = 'https://www.thesportsdb.com/api/v1/json/3';
+        const SPORTSDB_TEAM = '133738';                         // Real Madrid en TheSportsDB
+        const body = document.getElementById('rmm-body');
+        if (!body) return;
+
+        let timer = null;
+        const cache = { id: null, live: false, sbUrl: null, slug: null };
+
+        const esc = function (s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+        };
+
+        async function getJSON(url, ms) {
+            const ctl = new AbortController();
+            const to = setTimeout(function () { ctl.abort(); }, ms || 9000);
+            try {
+                const r = await fetch(url, { signal: ctl.signal, cache: 'no-store' });
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return await r.json();
+            } finally { clearTimeout(to); }
+        }
+
+        // ---------- helpers ESPN ----------
+        const num = function (v) {
+            if (v && typeof v === 'object') v = (v.displayValue != null ? v.displayValue : v.value);
+            const n = parseInt(v, 10);
+            return isNaN(n) ? null : n;
+        };
+        const compOf = function (ev) { return (ev.competitions && ev.competitions[0]) || {}; };
+        const statusOf = function (ev) { return compOf(ev).status || ev.status || {}; };
+        const stateOf = function (ev) { return (statusOf(ev).type && statusOf(ev).type.state) || ''; };
+        const titleCase = function (s) { return s.replace(/\b\w/g, function (c) { return c.toUpperCase(); }); };
+        const ymd = function (ms) {
+            const x = new Date(ms);
+            return x.getUTCFullYear() + String(x.getUTCMonth() + 1).padStart(2, '0') + String(x.getUTCDate()).padStart(2, '0');
+        };
+
+        function leagueInfo(ev, sb) {
+            let name = (ev.league && (ev.league.name || ev.league.abbreviation)) || '';
+            let slug = (ev.league && ev.league.slug) || '';
+            const m = /l:(\d+)/.exec(ev.uid || '');
+            if (m && sb && Array.isArray(sb.leagues)) {
+                const L = sb.leagues.find(function (l) { return String(l.id) === m[1]; });
+                if (L) { name = name || L.name || L.abbreviation || ''; slug = slug || L.slug || ''; }
+            }
+            if (!name && ev.season && ev.season.slug) {
+                name = titleCase(String(ev.season.slug).replace(/^\d{4}(-\d{2,4})?-?/, '').replace(/-/g, ' '));
+            }
+            return { name: name, slug: slug };
+        }
+
+        function teamOf(c) {
+            const t = c.team || {};
+            let logo = t.logo || (t.logos && t.logos[0] && t.logos[0].href) || '';
+            if (!logo && t.id) logo = 'https://a.espncdn.com/i/teamlogos/soccer/500/' + t.id + '.png';
+            return {
+                id: String(t.id || ''),
+                name: t.shortDisplayName || t.displayName || t.name || '',
+                logo: String(logo).replace(/^http:/, 'https:'),
+                score: num(c.score),
+                shootout: num(c.shootoutScore)
+            };
+        }
+
+        function goalsFromDetails(details, homeId, awayId) {
+            const out = [];
+            (details || []).forEach(function (d) {
+                const type = String((d.type && (d.type.text || d.type.type)) || d.text || '').toLowerCase();
+                const isGoal = d.scoringPlay === true || /goal/.test(type);
+                if (!isGoal || d.shootout || /disallow|no goal|cancel|missed|saved/.test(type)) return;
+                const tid = String((d.team && d.team.id) || '');
+                const side = tid === String(homeId) ? 'home' : (tid === String(awayId) ? 'away' : null);
+                if (!side) return;
+                const ath = (d.athletesInvolved && d.athletesInvolved[0]) ||
+                            (d.participants && d.participants[0] && d.participants[0].athlete) || {};
+                out.push({
+                    side: side,
+                    minute: (d.clock && d.clock.displayValue) || d.time || '',
+                    player: ath.displayName || ath.shortName || ath.fullName || '',
+                    kind: (d.ownGoal || /own goal/.test(type)) ? 'og' : ((d.penaltyKick || /penalty/.test(type)) ? 'p' : '')
+                });
+            });
+            return out;
+        }
+
+        // Si el marcador no cuadra y hay autogoles, ESPN pudo asignarlos al equipo contrario
+        function fixOwnGoals(goals, hs, as) {
+            if (hs == null || as == null) return;
+            const ok = function () {
+                return goals.filter(function (g) { return g.side === 'home'; }).length === hs &&
+                       goals.filter(function (g) { return g.side === 'away'; }).length === as;
+            };
+            if (ok()) return;
+            const ogs = goals.filter(function (g) { return g.kind === 'og'; });
+            if (!ogs.length) return;
+            const flip = function () { ogs.forEach(function (g) { g.side = g.side === 'home' ? 'away' : 'home'; }); };
+            flip();
+            if (!ok()) flip();
+        }
+
+        function normalize(ev, sb) {
+            const comp = compOf(ev);
+            const cs = comp.competitors || [];
+            const hc = cs.find(function (c) { return c.homeAway === 'home'; }) || cs[0] || {};
+            const ac = cs.find(function (c) { return c.homeAway === 'away'; }) || cs[1] || {};
+            const home = teamOf(hc), away = teamOf(ac);
+            const st = statusOf(ev);
+            const li = leagueInfo(ev, sb);
+            const goals = goalsFromDetails(comp.details || ev.details, home.id, away.id);
+            fixOwnGoals(goals, home.score, away.score);
+            return {
+                id: String(ev.id), date: ev.date, league: li.name, slug: li.slug,
+                state: (st.type && st.type.state) || '',
+                statusName: (st.type && st.type.name) || '',
+                clock: st.displayClock || '',
+                detail: (st.type && (st.type.detail || st.type.description)) || '',
+                home: home, away: away, goals: goals
+            };
+        }
+
+        // ---------- carga ESPN ----------
+        async function findInScoreboard(ev) {
+            const t = new Date(ev.date).getTime();
+            const days = Array.from(new Set([ymd(t - 6 * 3600e3), ymd(t)]));
+            for (let i = 0; i < days.length; i++) {
+                const url = ESPN + '/all/scoreboard?dates=' + days[i] + '&limit=400';
+                try {
+                    const sb = await getJSON(url);
+                    const f = (sb.events || []).find(function (e) { return String(e.id) === String(ev.id); });
+                    if (f) return { event: f, sb: sb, day: days[i] };
+                } catch (e) { /* intenta el siguiente día */ }
+            }
+            return null;
+        }
+
+        async function viaSummary(data) {
+            if (!data.slug) return [];
+            const j = await getJSON(ESPN + '/' + data.slug + '/summary?event=' + data.id);
+            const hc = j.header && j.header.competitions && j.header.competitions[0];
+            const lists = [hc && hc.details, j.keyEvents, j.details].filter(Boolean);
+            for (let i = 0; i < lists.length; i++) {
+                const g = goalsFromDetails(lists[i], data.home.id, data.away.id);
+                if (g.length) { fixOwnGoals(g, data.home.score, data.away.score); return g; }
+            }
+            return [];
+        }
+
+        async function fullEspn() {
+            const base = ESPN + '/all/teams/' + TEAM_ID + '/schedule';
+            const rs = await Promise.allSettled([getJSON(base), getJSON(base + '?fixture=true')]);
+            const map = new Map();
+            rs.forEach(function (r) {
+                if (r.status === 'fulfilled' && r.value && Array.isArray(r.value.events)) {
+                    r.value.events.forEach(function (e) { map.set(String(e.id), e); });
+                }
+            });
+            if (!map.size) throw new Error('sin calendario');
+            const all = Array.from(map.values());
+            const byDateDesc = function (a, b) { return new Date(b.date) - new Date(a.date); };
+            let ev = all.filter(function (e) { return stateOf(e) === 'in'; }).sort(byDateDesc)[0];
+            if (!ev) {
+                ev = all.filter(function (e) {
+                    return stateOf(e) === 'post' && (statusOf(e).type || {}).completed === true;
+                }).sort(byDateDesc)[0];
+            }
+            if (!ev) throw new Error('sin partidos');
+
+            const found = await findInScoreboard(ev);
+            const data = found ? normalize(found.event, found.sb) : normalize(ev, null);
+            if (!data.slug) data.slug = leagueInfo(ev, null).slug;
+            if (!data.league) data.league = leagueInfo(ev, null).name;
+            if (found) {
+                cache.sbUrl = (data.slug ? ESPN + '/' + data.slug + '/scoreboard?dates=' + found.day
+                                         : ESPN + '/all/scoreboard?dates=' + found.day + '&limit=400');
+                cache.fallbackUrl = ESPN + '/all/scoreboard?dates=' + found.day + '&limit=400';
+            } else { cache.sbUrl = null; }
+            if (!data.goals.length && ((data.home.score || 0) + (data.away.score || 0)) > 0) {
+                try { data.goals = await viaSummary(data); } catch (e) { /* sin goleadores */ }
+            }
+            return data;
+        }
+
+        async function quickEspn() {
+            if (!cache.sbUrl || !cache.id) return null;
+            const urls = [cache.sbUrl, cache.fallbackUrl].filter(Boolean);
+            for (let i = 0; i < urls.length; i++) {
+                try {
+                    const sb = await getJSON(urls[i]);
+                    const f = (sb.events || []).find(function (e) { return String(e.id) === cache.id; });
+                    if (f) {
+                        const d = normalize(f, sb);
+                        if (!d.slug) d.slug = cache.slug || '';
+                        return d;
+                    }
+                } catch (e) { /* siguiente */ }
+            }
+            return null;
+        }
+
+        // ---------- respaldo TheSportsDB ----------
+        function parseSdbGoals(str, side) {
+            if (!str) return [];
+            return String(str).split(/;|\n|<br\s*\/?>/i).map(function (s) { return s.trim(); }).filter(Boolean).map(function (s) {
+                const kind = /pen/i.test(s) ? 'p' : (/own|o\.?g/i.test(s) ? 'og' : '');
+                let m = s.match(/^(\d+(?:\+\d+)?)'?\s*[:\-]?\s*(.+)$/);
+                if (m) return { side: side, minute: m[1] + "'", player: m[2].replace(/\s*\((?:pen|p|og)\)/i, ''), kind: kind };
+                m = s.match(/^(.+?)\s+(\d+(?:\+\d+)?)'?$/);
+                if (m) return { side: side, minute: m[2] + "'", player: m[1], kind: kind };
+                return { side: side, minute: '', player: s, kind: kind };
+            });
+        }
+
+        async function loadSportsDB() {
+            const j = await getJSON(SPORTSDB + '/eventslast.php?id=' + SPORTSDB_TEAM);
+            const list = (j.results || j.events || []).filter(function (e) {
+                return e.intHomeScore != null && e.intHomeScore !== '';
+            }).sort(function (a, b) {
+                return new Date((b.dateEvent || '') + 'T' + (b.strTime || '00:00:00')) - new Date((a.dateEvent || '') + 'T' + (a.strTime || '00:00:00'));
+            });
+            let e = list[0];
+            if (!e) throw new Error('sin resultados');
+            try {
+                const d = await getJSON(SPORTSDB + '/lookupevent.php?id=' + e.idEvent);
+                if (d.events && d.events[0]) e = Object.assign({}, e, d.events[0]);
+            } catch (x) { /* sin detalle */ }
+            return {
+                id: String(e.idEvent), date: e.strTimestamp ? e.strTimestamp + 'Z' : (e.dateEvent + 'T' + (e.strTime || '12:00:00') + 'Z'),
+                league: e.strLeague || '', slug: '', state: 'post', statusName: 'STATUS_FULL_TIME', clock: '', detail: '',
+                home: { id: '', name: e.strHomeTeam, logo: e.strHomeTeamBadge || '', score: num(e.intHomeScore), shootout: null },
+                away: { id: '', name: e.strAwayTeam, logo: e.strAwayTeamBadge || '', score: num(e.intAwayScore), shootout: null },
+                goals: parseSdbGoals(e.strHomeGoalDetails, 'home').concat(parseSdbGoals(e.strAwayGoalDetails, 'away'))
+            };
+        }
+
+        // ---------- render ----------
+        function crest(t) {
+            const ini = esc((t.name || '?').split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 3).toUpperCase());
+            if (!t.logo) return '<span class="rmm-crest rmm-crest-fallback">' + ini + '</span>';
+            return '<img class="rmm-crest" src="' + esc(t.logo) + '" alt="" loading="lazy" data-ini="' + ini + '">';
+        }
+
+        function sideHtml(goals) {
+            const m = new Map();
+            goals.forEach(function (g) {
+                const k = g.player || '—';
+                if (!m.has(k)) m.set(k, []);
+                m.get(k).push(g);
+            });
+            return Array.from(m.entries()).map(function (kv) {
+                return '<span class="rmm-sc">' + esc(kv[0]) + '<em>' + kv[1].map(function (g) {
+                    return esc(g.minute) + (g.kind === 'p' ? ' (P)' : (g.kind === 'og' ? ' (AG)' : ''));
+                }).join(' · ') + '</em></span>';
+            }).join('');
+        }
+
+        function statusLabel(d) {
+            if (d.state === 'in') {
+                return /HALFTIME/.test(d.statusName) ? 'Descanso' : ('En vivo' + (d.clock ? ' ' + d.clock : ''));
+            }
+            if (/PEN/.test(d.statusName)) return 'Final · penales';
+            if (/AET|EXTRA/.test(d.statusName)) return 'Final · prórroga';
+            return 'Finalizado';
+        }
+
+        function render(d) {
+            const live = d.state === 'in';
+            let dateStr = '';
+            try {
+                dateStr = new Date(d.date).toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).replace(/\./g, '');
+                dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+            } catch (e) { /* sin fecha */ }
+            const hs = d.home.score == null ? '-' : d.home.score;
+            const as = d.away.score == null ? '-' : d.away.score;
+            const pens = (d.home.shootout != null && d.away.shootout != null)
+                ? '<div class="rmm-pens rm-silver-black-text">(' + d.home.shootout + '-' + d.away.shootout + ' pen.)</div>' : '';
+            const gh = d.goals.filter(function (g) { return g.side === 'home'; });
+            const ga = d.goals.filter(function (g) { return g.side === 'away'; });
+            let goalsHtml = '';
+            if (d.goals.length) {
+                goalsHtml = '<div class="rmm-goals"><div class="rmm-col-home rm-silver-black-text">' + sideHtml(gh) +
+                    '</div><i class="rmm-ball ph-fill ph-soccer-ball" aria-hidden="true"></i><div class="rmm-col-away rm-silver-black-text">' + sideHtml(ga) + '</div></div>';
+            } else if (((d.home.score || 0) + (d.away.score || 0)) === 0) {
+                goalsHtml = '<div class="rmm-note rm-silver-black-text">Sin goles</div>';
+            } else {
+                goalsHtml = '<div class="rmm-note rm-silver-black-text">Goleadores no disponibles por ahora</div>';
+            }
+            body.innerHTML =
+                '<div class="rmm-top"><span class="rmm-league rm-silver-black-text">' + esc(d.league || 'Último partido') + '</span>' +
+                '<span class="rmm-pill' + (live ? ' is-live' : '') + '"><i class="rmm-dot"></i>' + esc(statusLabel(d)) + '</span></div>' +
+                '<div class="rmm-main">' +
+                    '<div class="rmm-team">' + crest(d.home) + '<span class="rmm-name rm-silver-black-text">' + esc(d.home.name) + '</span></div>' +
+                    '<div class="rmm-mid"><div class="rmm-score rm-silver-black-text"><span>' + hs + '</span><b>:</b><span>' + as + '</span></div>' +
+                        '<div class="rmm-date rm-silver-black-text">' + esc(dateStr) + '</div>' + pens +
+                        '<div class="rmm-tag rm-silver-black-text">Último partido</div></div>' +
+                    '<div class="rmm-team">' + crest(d.away) + '<span class="rmm-name rm-silver-black-text">' + esc(d.away.name) + '</span></div>' +
+                '</div>' + goalsHtml;
+            body.querySelectorAll('img.rmm-crest').forEach(function (img) {
+                img.addEventListener('error', function () {
+                    const s = document.createElement('span');
+                    s.className = 'rmm-crest rmm-crest-fallback';
+                    s.textContent = img.getAttribute('data-ini') || '';
+                    img.replaceWith(s);
+                }, { once: true });
+            });
+        }
+
+        function renderError() {
+            body.innerHTML = '<div class="rmm-loading rm-silver-black-text">Último partido no disponible por ahora</div>';
+        }
+
+        // ---------- ciclo de actualización ----------
+        function schedule(ms) {
+            clearTimeout(timer);
+            timer = setTimeout(refresh, ms);
+        }
+
+        async function refresh() {
+            if (document.hidden) { schedule(30000); return; }
+            try {
+                let data = null;
+                if (cache.live) data = await quickEspn();
+                if (!data) data = await fullEspn();
+                cache.id = data.id;
+                cache.live = data.state === 'in';
+                cache.slug = data.slug || cache.slug;
+                render(data);
+                schedule(cache.live ? 30000 : 300000);
+            } catch (err) {
+                try {
+                    const d = await loadSportsDB();
+                    cache.live = false;
+                    render(d);
+                    schedule(180000);
+                } catch (err2) {
+                    renderError();
+                    schedule(60000);
+                }
+            }
+        }
+
+        document.addEventListener('visibilitychange', function () {
+            if (!document.hidden) schedule(500);
+        });
+
+        refresh();
+    })();
+    </script>
+
+    <script>
+    // ==========================================================
+    // PROTECCIÓN DEL SITIO (disuasiva): sin selección/copia, sin menú contextual,
+    // atajos de DevTools/código fuente bloqueados y consola silenciada.
+    // Pon PROTECT_SITE = false para depurar tú mismo.
+    // ==========================================================
+    (function () {
+        const PROTECT_SITE = true;
+        if (!PROTECT_SITE) return;
+
+        const isField = function (t) {
+            return t && t.closest && t.closest('input, textarea, [contenteditable="true"]');
+        };
+
+        ['contextmenu', 'selectstart', 'dragstart', 'copy', 'cut'].forEach(function (name) {
+            document.addEventListener(name, function (e) {
+                if (isField(e.target) && name !== 'contextmenu' && name !== 'dragstart') return;
+                e.preventDefault();
+            }, true);
+        });
+
+        document.addEventListener('keydown', function (e) {
+            const mod = e.ctrlKey || e.metaKey;
+            const c = e.code;
+            const blocked =
+                e.key === 'F12' || e.keyCode === 123 ||
+                (mod && e.shiftKey && (c === 'KeyI' || c === 'KeyJ' || c === 'KeyC' || c === 'KeyK' || c === 'KeyE' || c === 'KeyM')) ||
+                (mod && e.altKey && (c === 'KeyI' || c === 'KeyJ' || c === 'KeyC' || c === 'KeyU')) ||
+                (mod && !e.shiftKey && !e.altKey && (c === 'KeyU' || c === 'KeyS' || (c === 'KeyA' && !isField(e.target))));
+            if (blocked) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }, true);
+
+        // Consola silenciada (se guarda la original para la detección)
+        const nativeDebug = console.debug ? console.debug.bind(console) : function () {};
+        const nativeClear = console.clear ? console.clear.bind(console) : function () {};
+        const noop = function () {};
+        ['log', 'info', 'warn', 'error', 'debug', 'table', 'dir', 'dirxml', 'trace',
+         'group', 'groupCollapsed', 'groupEnd', 'time', 'timeEnd', 'count', 'assert'].forEach(function (m) {
+            try { console[m] = noop; } catch (err) { /* ignorar */ }
+        });
+
+        // Detección de DevTools abiertas (Chromium): al abrirse, la página se difumina
+        let lastHit = 0;
+        const probe = new Image();
+        Object.defineProperty(probe, 'id', { get: function () { lastHit = Date.now(); return ''; } });
+        setInterval(function () {
+            nativeDebug(probe);
+            nativeClear();
+            document.documentElement.classList.toggle('rmm-locked', Date.now() - lastHit < 2500);
+        }, 1000);
+    })();
+    </script>
+
+    <script>
+    // Si el SVG de Trade no pudiera cargarse (sin red / sin CORS), se usa el icono de respaldo
+    (function () {
+        const icon = document.querySelector('.rm-trade-icon');
+        const fb = document.querySelector('.rm-trade-fallback');
+        if (!icon || !fb) return;
+        const probe = new Image();
+        probe.crossOrigin = 'anonymous';
+        probe.onerror = function () {
+            icon.style.display = 'none';
+            fb.style.display = 'inline-block';
+        };
+        probe.src = 'https://raw.githubusercontent.com/eamxat/JhonResources/9ee2cd4c3d99b00f996719a3ce9699a191ba1ac8/trade.svg';
+    })();
+    </script>
+</body>
+</html>
